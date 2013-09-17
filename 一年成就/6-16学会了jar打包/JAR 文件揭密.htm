@@ -1,0 +1,1122 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://www.ibm.com/developerworks/cn/java/j-jar/ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><HTML 
+lang="zh-CN" xml:lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"><HEAD>
+<META content="text/html; charset=UTF-8" http-equiv="Content-Type"><TITLE>JAR 
+文件揭密</TITLE>
+<META content='(PICS-1.1 "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0) "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))' 
+http-equiv="PICS-Label"><LINK rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+<LINK rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico">
+<META name="Owner" content="dw@cn.ibm.com">
+<META scheme="rfc1766" name="DC.Language" content="zh-CN">
+<META name="IBM.Country" content="CN">
+<META name="Security" content="Public">
+<META name="IBM.SpecialPurpose" content="SP001">
+<META name="IBM.PageAttributes" content="sid=1003,1004">
+<META name="Source" content="v16 Template Generator">
+<META name="Robots" content="index,follow">
+<META name="Abstract" content="大多数 Java 程序员都熟悉对 JAR 文件的基本操作。但是只有少数程序员了解 JAR 文件格式的强大功能。在本文中，作者探讨了 JAR 格式的许多功能和优势，包括打包、可执行的 JAR 文件、安全性和索引。">
+<META name="Description" content="大多数 Java 程序员都熟悉对 JAR 文件的基本操作。但是只有少数程序员了解 JAR 文件格式的强大功能。在本文中，作者探讨了 JAR 格式的许多功能和优势，包括打包、可执行的 JAR 文件、安全性和索引。">
+<META name="Keywords" content="JAR, Java, Pagadala J Suresh, Palaniyappan Thiagarajan,, tttjca">
+<META scheme="iso8601" name="DC.Date" content="2003-11-15">
+<META scheme="IBM_ContentClassTaxonomy" name="DC.Type" content="CT316">
+<META scheme="IBM_SubjectTaxonomy" name="DC.Subject" content="TT300">
+<META scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCJVACN">
+<META name="DC.Rights" content="© Copyright&nbsp;IBM Corporation&nbsp;2003">
+<META scheme="W3CDTF" name="IBM.Effective" content="2003-11-15">
+<META name="title" content="JAR 文件揭密"><!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/all.css" 
+media="all"><LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/screen.css" 
+media="screen,projection"><LINK title="www" rel="stylesheet" type="text/css" 
+href="JAR%20文件揭密_files/screen-uas.css" media="screen,projection"><LINK title="www" 
+rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/screen-fonts.css" media="screen,projection">
+<LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/handheld.css" 
+media="handheld"><LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/print.css" 
+media="print"><LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/overlay.css" 
+media="screen,projection"><!-- dW-specific CSS --><LINK title="www" rel="stylesheet" 
+type="text/css" href="JAR%20文件揭密_files/dw-screen.css" media="screen,projection">
+<LINK title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/dw-local-site.css" 
+media="screen,projection"><LINK title="www" rel="stylesheet" type="text/css" 
+href="JAR%20文件揭密_files/jquery.cluetip.css" media="screen,projection"><LINK 
+title="www" rel="stylesheet" type="text/css" href="JAR%20文件揭密_files/dw-mf0311.css">
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/ibmcommon.js">//</SCRIPT>
+
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/dynamicnav.js">//</SCRIPT>
+<!-- dW functional JS -->
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/urltactic.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript">
+  // <![CDATA[
+
+ dwr = {};
+  dwr.clickhere = '点击评分';
+  dwr.stars = '星';
+  dwr.star = '星'; 
+  dwr.avgRatingOf = '平均分';
+  dwr.youRated = '您的评分是';
+  dwr.avgRating = '平均分';
+  dwr.basedOnVote = '共 {1} 个评分'; // {1} to be substitue by code
+  dwr.basedOnVotes = '共 {1} 个评分';
+  dwr.leftParen = '（'; 
+  dwr.rightParen = ' ）'; 
+  dwr.space = ' '; 
+  dwr.yourRating = '您的评分';
+
+// ]]>
+</SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/artrating.js"></SCRIPT>
+
+<STYLE type="text/css">
+  .metavalue {
+  display: none;
+  }
+</STYLE>
+<!-- Rating_END --><!-- RESERVED_HEADER_INCLUDE -->
+<SCRIPT language="javascript" type="text/javascript" src="JAR%20文件揭密_files/ajax1.js"></SCRIPT>
+
+<SCRIPT language="javascript" type="text/javascript" src="JAR%20文件揭密_files/search_counter-maverick.js"></SCRIPT>
+
+<SCRIPT language="javascript" type="text/javascript" src="JAR%20文件揭密_files/request_referer_capture-maverick.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript">
+ <!--
+ setDefaultQuery('defaultHere');
+ //-->
+</SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript">
+ <!--
+ function openNewWindow(url,tar,arg){window.open(url,tar,arg);}
+ //-->
+</SCRIPT>
+<!-- Include file support -->
+<SCRIPT language="JavaScript" type="text/javascript">
+    (function($) {
+    jQuery.extend({
+    getInc: function(u,d){
+    if(u==null)return;
+    jQuery.ajax({
+    type: "GET",
+    url: u,
+    dataType: "text",
+    success: function(t) {
+    jQuery(d).html(t);
+    ibmCommon.initShowHide(jQuery(d).children()[0]);	
+    },
+    async: true
+    });
+    }
+    });
+    })(jQuery);
+  </SCRIPT>
+
+<META name="GENERATOR" content="MSHTML 9.00.8112.16430"></HEAD>
+<BODY id="ibm-com">
+<DIV id="ibm-top" class="ibm-landing-page"><!-- MASTHEAD_BEGIN --><!-- MASTHEAD_BEGIN -->
+<DIV class="ibm-access"><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-content">跳转到主要内容</A></DIV>
+<DIV id="ibm-masthead-dw"><!-- TOP ROW -->
+<DIV id="dw-masthead-top-row">
+<UL id="ibm-unav-home-dw">
+  <LI id="ibm-logo"><A href="http://www.ibm.com/cn/zh/"><IMG alt="IBM®" src="JAR%20文件揭密_files/ibm-smlogo.gif" 
+  width="44" height="16"></A></LI></UL>
+<UL id="ibm-mast-options-dw" class="cn">
+  <LI id="dw-mast-top-0"><A class="dw-mf-noscript" title="Sign in (or register) requires JavaScript" 
+  href="http://www.ibm.com/developerworks/cn/java/j-jar/#">登录 (或注册)</A></LI>
+  <LI id="dw-mast-top-1" class="dw-mast-top-1-cn"><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#SELECTLANG">中文</A><IMG 
+  class="dw-preload" alt="" src="JAR%20文件揭密_files/arrow-down-active.gif" width="8" 
+  height="7"></LI>
+  <LI id="dw-mast-top-2" class="dw-mf-hide"><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">[userid]<IMG 
+  class="dw-mast-profimg" alt="PHOTO" src="JAR%20文件揭密_files/photo.gif" width="20" 
+  height="20"></A></LI></UL></DIV><!-- TOP ROW SLIDER -->
+<DIV id="ibm-my-menu-dw">
+<DIV class="ibm-ribbon-pane-dw">
+<DIV class="ibm-ribbon-section-dw"><!-- Sign-in -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-1-1">
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV>
+<DIV id="dw-mast-sso">
+<DIV id="dw-mast-sso-reg">
+<P class="dw-mast-sso-reg-cn">如果您还没有注册到 IBM 注册系统，我们为给您带来的不便表示道歉，并请您马上注册。 							
+									<A onclick="(function () {window.location='/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh&amp;d='+encodeURIComponent(location.href);})();" 
+href="http://www.ibm.com/developerworks/cn/java/j-jar/#">现在注册</A>。</P></DIV>
+<DIV id="signin_error_mf" class="dw-mf-hide"></DIV>
+<DIV id="dw-mast-sso-form">
+<FORM id="sForm_mf" onsubmit="return false;" method="post" name="sForm_name_mf" 
+action="">
+<DIV id="dw-mast-sso-id" class="dw-mast-sso-id-cn"><LABEL for="ibmid_mf">IBM 
+ID：</LABEL><INPUT id="ibmid_mf" onkeypress="handleEP(event,this.form,'mf');" 
+name="ibmid_name_mf" maxLength="100" type="text"></DIV>
+<DIV id="dw-mast-sso-pw" class="dw-mast-sso-pw-cn"><LABEL 
+for="pw_mf">密码：</LABEL><INPUT id="pw_mf" onkeypress="handleEP(event,this.form,'mf');" 
+name="pw_name_mf" maxLength="100" type="password"></DIV>
+<DIV id="dw-mast-sso-target" class="dw-mast-sso-target-cn"><LABEL for="AfterSignIn_mf">登录之后：</LABEL><SELECT 
+id="AfterSignIn_mf" name="AfterSignIn_name_mf"><OPTION selected="selected" 
+  value="">留在当前页面</OPTION><OPTION value="/developerworks/mydeveloperworks/profiles/html/myProfileView.do?lang=zh">My 
+  developerWorks 概要信息</OPTION><OPTION value="/developerworks/mydeveloperworks/homepage/?lang=zh">My 
+  developerWorks 首页</OPTION></SELECT></DIV>
+<DIV id="dw-mast-sso-terms">
+<P class="dw-mf-perm-box"><INPUT id="perm_mf" name="perm_name_mf" type="checkbox"><LABEL 
+for="perm_mf"> 保持登录。</LABEL></P>
+<P class="dw-mast-sso-terms-cn">单击提交则表示您同意developerWorks 的条款和条件。 <A href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">查看条款和条件</A>.</P></DIV>
+<DIV><INPUT class="dw-mf-submit-btn-cn" onclick="signin('mf');return false;" name="ibm_submit_name_mf" value="提交" type="submit"></DIV></FORM></DIV>
+<DIV id="dw-mast-sso-update">
+<UL>
+  <LI><A class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 
+  IBM ID？</A></LI></UL>
+<UL class="dw-mf-pwupdate-cn">
+  <LI><A class="ibm-forward-link" onclick="(function () {window.location='https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(getAuthUrl())+'%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D'+encodeURIComponent(location.href);})();" 
+  href="http://www.ibm.com/developerworks/cn/java/j-jar/#">忘记密码？</A></LI>
+  <LI><A class="ibm-forward-link" onclick="(function () {window.location='https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d='+encodeURIComponent(location.href);})();" 
+  href="http://www.ibm.com/developerworks/cn/java/j-jar/#">更改您的密码</A></LI></UL></DIV>
+<DIV id="dw-mast-sso-text">
+<P>当您初次登录到 developerWorks 时，将会为您创建一份概要信息，概要信息中包括您的姓名和您在注册 developerWorks 
+时选择的昵称。您的姓名（除非选择隐藏）和昵称将和您在 developerWorks 发布的内容显示在一起。</P>
+<P class="dw-mf-secure-cn">所有提交的信息确保安全。</P></DIV></DIV>
+<DIV id="dw-mast-dname" class="dw-mf-hide">
+<P>当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 
+发布的内容显示在一起。</P>
+<P><STRONG>昵称长度在 3 至 31 个字符之间</STRONG>。 您的昵称在 developerWorks 
+社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</P>
+<DIV id="signin_dname_error_mf" class="dw-mf-hide"></DIV>
+<DIV id="dw-mast-dname-form">
+<FORM id="dForm_mf" onsubmit="return false;" method="post" name="dForm_name_mf" 
+action="">
+<DIV id="dw-mast-dname-mf"><LABEL for="dname_mf">昵称：</LABEL><INPUT id="dname_mf" 
+onkeypress="handleEP(event,this.form,'mf');" name="dname_name_mf" maxLength="31" 
+size="25" type="text"></DIV>
+<DIV id="dw-mast-dname-terms">
+<P class="dw-mast-dname-terms-cn">单击<STRONG>提交</STRONG>则表示您同意developerWorks 
+的条款和条件。 <A href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">查看条款和条件</A>.</P></DIV>
+<DIV><INPUT class="dw-mf-submit-btn-cn" onclick="signin('mf');return false;" name="dname_submit_name_mf" value="提交" type="submit"></DIV></FORM></DIV>
+<DIV id="dw-mast-dname-secure">
+<P class="dw-mf-secure-cn">所有提交的信息确保安全。</P></DIV></DIV>
+<DIV id="dw-mast-auth" class="dw-mf-hide">
+<DIV>
+<H2>My developerWorks：</H2>
+<UL>
+  <LI><A id="dw-mast-top-0-0" href="http://www.ibm.com/developerworks/mydeveloperworks/profiles/html/myProfileView.do?lang=zh">我的概要信息</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/mydeveloperworks/homepage?lang=zh">我的首页</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/mydeveloperworks/groups/service/html/mycommunities?lang=zh">我的群组</A></LI></UL></DIV>
+<DIV id="dw-mast-notify" class="dw-mf-hide">
+<H2>我的通知：</H2>
+<UL>
+  <LI><A id="new_notify" href="http://www.ibm.com/developerworks/mydeveloperworks/homepage?lang=zh">{[num_notify] 
+  个新通知}([num_notify] 个新通知)</A></LI>
+  <LI><A id="new_invite" href="http://www.ibm.com/developerworks/mydeveloperworks/profiles/html/wc.do?action=in&amp;requireAuth=true&amp;widgetId=friends&amp;lang=[lang]">{[num_invite] 
+  个网络请求}([num_invite] 个网络请求)</A></LI></UL></DIV>
+<DIV class="dw-mast-more">
+<UL class="ibm-link-list">
+  <LI><A class="dw-more-link" onclick="signOut(); return false;" href="http://www.ibm.com/developerworks/cn/java/j-jar/#"><STRONG>退出</STRONG></A></LI></UL></DIV></DIV></DIV></DIV><!-- Site selector -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-2-1">
+<H2>选择语言：</H2>
+<UL>
+  <LI><A id="dw-mast-top-1-0" 
+  href="http://www.ibm.com/developerworks/">English</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/">中文</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/jp/">日本語</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/kr/">한국어</A></LI></UL></DIV>
+<DIV class="dw-mast-col-2-2">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/ru/">Русский</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/br/">Português 
+(Brasil)</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/ssa/">Español</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/vn/">Việt</A></LI></UL></DIV>
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV></DIV></DIV></DIV><!-- BOTTOM ROW -->
+<DIV id="ibm-universal-nav-dw">
+<UL id="ibm-unav-links-dw">
+  <LI id="ibm-unav-home-dwlogo"><A 
+  href="http://www.ibm.com/developerWorks/cn/"><IMG alt="developerWorks®" src="JAR%20文件揭密_files/dw-wordmark.gif" 
+  width="218" height="32"></A></LI></UL>
+<UL id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn">
+  <LI id="dw-mast-nav-0"><A 
+  href="http://www.ibm.com/developerworks/cn/topics">技术主题</A></LI>
+  <LI id="dw-mast-nav-1"><A href="http://www.ibm.com/developerworks/cn/downloads/">软件下载</A></LI>
+  <LI id="dw-mast-nav-2"><A href="https://www.ibm.com/developerworks/community/?lang=zh">社区</A></LI>
+  <LI id="dw-mast-nav-3"><A href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&amp;lang=zh">技术讲座</A></LI></UL>
+<FORM id="ibm-search-form" method="get" name="form1" action="//www.ibm.com/search/csass/search/"><INPUT 
+name="sn" value="dw" type="hidden"><INPUT name="lang" value="zh" 
+type="hidden"><INPUT name="cc" value="CN" type="hidden"><INPUT name="en" value="utf" 
+type="hidden"><INPUT name="hpp" value="20" type="hidden"><INPUT name="dws" 
+value="cndw" type="hidden"><INPUT name="lo" value="zh" type="hidden">
+<P><LABEL for="q"><IMG alt="查询:" src="JAR%20文件揭密_files/c.gif" width="1" height="1"></LABEL><INPUT 
+id="q" name="q" maxLength="100" value="搜索 developerWorks" type="text"><INPUT id="ibm-search" class="ibm-btn-search ibm-btn-search-cn" name="Search" value="搜索" type="submit"></P></FORM></DIV><!-- BOTTOM ROW SLIDER -->
+<DIV id="ibm-common-menu-dw">
+<DIV class="ibm-ribbon-pane-dw">
+<DIV class="ibm-ribbon-section-dw"><!-- Technical topics category -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-3-1">
+<H2>IBM 产品：</H2>
+<UL>
+  <LI><A id="dw-mast-nav-0-0" 
+  href="http://www.ibm.com/developerworks/cn/aix/">AIX and UNIX</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/data/">Information 
+  Management</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/lotus/">Lotus</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/rational/">Rational</A></LI><!--	<li><a href="">Tivoli</a></li>  -->
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/websphere/">WebSphere</A></LI></UL></DIV>
+<DIV class="dw-mast-col-3-2">
+<H2>技术：</H2>
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/">Java 
+  technology</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/linux/">Linux</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/opensource/">Open 
+  source</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/webservices/">SOA and web 
+  services</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/web/">Web 
+  development</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/xml/">XML</A></LI></UL></DIV>
+<DIV class="dw-mast-col-3-3">
+<H2>解决方案：</H2>
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/cloud/">Cloud 
+  computing</A></LI><!--	<li><a href="">Industries</a></li> --></UL><BR>
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/library/">文档库</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/rss/">订阅源</A></LI>
+  <LI><A href="http://www.ibm.com/vrm/newsletter/10104?S_TACT=105AGX52&amp;S_CMP=dwcntop">在线浏览每周时事通讯</A></LI></UL></DIV>
+<DIV class="dw-mast-more">
+<UL class="ibm-link-list">
+  <LI><A class="dw-more-link" href="http://www.ibm.com/developerworks/cn/topics/"><STRONG>技术主题详情</STRONG></A></LI></UL></DIV>
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV><!-- Evaluation software category -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-1-1">
+<H2>查找软件：</H2>
+<UL>
+  <LI><A id="dw-mast-nav-1-0" href="http://www.ibm.com/developerworks/cn/downloads/product.html">IBM 
+  产品</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/downloads/evalmethod.html">评估方式（下载，在线试用，Beta 
+  版，云）</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/downloads/industry.html">行业</A></LI></UL></DIV>
+<DIV class="dw-mast-more">
+<UL class="ibm-link-list">
+  <LI><A class="dw-more-link" href="http://www.ibm.com/developerworks/cn/downloads/"><STRONG>软件评估详情</STRONG></A></LI></UL></DIV>
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV><!-- Community category -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-2-1">
+<UL>
+  <LI><A id="dw-mast-nav-2-0" href="https://www.ibm.com/developerworks/community/homepage/?lang=zh">我的首页</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/community/profiles/home.do?lang=zh">概要信息</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/community/groups/service/html/allcommunities?lang=zh">群组</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/mydeveloperworks/blogs/?lang=zh">博客</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/community/bookmarks/html?lang=zh">书签</A></LI></UL></DIV>
+<DIV class="dw-mast-col-2-2">
+<UL><!--	<li><a href="">Forums</a></li> -->
+  <LI><A href="https://www.ibm.com/developerworks/mydeveloperworks/wikis/home?lang=zh">Wiki</A></LI>
+  <LI><A 
+  href="https://www.ibm.com/developerworks/community/files/app?lang=zh">文件</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/community/activities/service/html/mainpage?lang=zh#dashboard,myactivities">活动</A></LI><!--	<li><a href="">Podcasts</a></li> --></UL></DIV>
+<DIV class="dw-mast-more">
+<UL class="ibm-link-list">
+  <LI><A class="dw-more-link" href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=3302cc3b-074e-44da-90b1-5055f1dc0d9c&amp;lang=zh"><STRONG>社区详情</STRONG></A></LI></UL></DIV>
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV><!-- Events category -->
+<DIV class="dw-mast-columns">
+<DIV class="dw-mast-col-1-1">
+<UL>
+  <LI><A id="dw-mast-nav-3-0" href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&amp;lang=zh">技术讲座</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/swi/">多媒体课堂</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/find/webcasts/">网络广播（英文）</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/find/events/">查找活动（技术讲座，网络广播，会议等）（英文）</A></LI></UL></DIV>
+<DIV class="dw-mast-more">
+<UL class="ibm-link-list">
+  <LI><A class="dw-more-link" href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&amp;lang=zh"><STRONG>活动详情</STRONG></A></LI></UL></DIV>
+<DIV class="dw-mast-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV></DIV></DIV></DIV></DIV>
+<DIV id="fdiv" class="ibm-access"></DIV><!-- MASTHEAD_END --><!-- MASTHEAD_END -->
+<DIV id="ibm-pcon"><!-- CONTENT_BEGIN -->
+<DIV id="ibm-content"><!-- Navigation_Trail_BEGIN --><!-- &nbsp; -->
+<DIV id="ibm-content-head">
+<UL id="ibm-navigation-trail">
+  <LI class="ibm-first"><A 
+  href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/">Java 
+  technology</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/views/java/libraryview.jsp">文档库</A></LI></UL></DIV><!-- Navigation_Trail_END --><!-- dW_Summary Area_START -->
+<DIV id="dw-summary-article">
+<DIV class="dw-content-head">
+<H1>JAR 文件揭密</H1>
+<P><EM>探索 JAR 文件格式的强大功能</EM></P></DIV>
+<DIV class="ibm-container-body ibm-two-column">
+<DIV class="ibm-column ibm-first">
+<DIV class="author"><A class="dwauthor" href="http://www.ibm.com/developerworks/cn/java/j-jar/#author1" 
+rel="#authortip1">Pagadala J. Suresh</A> (<A href="mailto:pjsuresh@in.ibm.com?subject=JAR 文件揭密&amp;cc=pjsuresh@in.ibm.com">mailto:pjsuresh@in.ibm.com?subject=JAR 
+文件揭密&amp;cc=pjsuresh@in.ibm.com</A>), 软件工程师, IBM Global Services India</DIV>
+<DIV id="authortip1" class="dwauthor-onload-state ibm-no-print">
+<DIV class="position"><IMG alt="Photo of Pagadala Suresh" src="JAR%20文件揭密_files/p-suresh.jpg" 
+width="64" height="80"></DIV>Pagadala J. Suresh 是 IBM Global Services India 
+的软件工程师。他擅长的领域包括 Java 技术、WebSphere Application Server 和 WebSphere Studio 
+Application Developer (WSAD)、Ariba Buyer。他参与了 WebSphere 的 IBM Redbook 项目。可以通过    
+             <A 
+href="mailto:pjsuresh@in.ibm.com?cc=pjsuresh@in.ibm.com">mailto:pjsuresh@in.ibm.com?cc=pjsuresh@in.ibm.com</A>
+与 Pagadala 联系。	            </DIV>
+<DIV class="author"><A class="dwauthor" href="http://www.ibm.com/developerworks/cn/java/j-jar/#author2" 
+rel="#authortip2">Palaniyappan Thiagarajan</A> (<A href="mailto:tpalaniy@in.ibm.com?subject=JAR 文件揭密&amp;cc=tpalaniy@in.ibm.com">mailto:tpalaniy@in.ibm.com?subject=JAR 
+文件揭密&amp;cc=tpalaniy@in.ibm.com</A>), 软件工程师, IBM Global Services India</DIV>
+<DIV id="authortip2" class="dwauthor-onload-state ibm-no-print">
+<DIV class="position"><IMG alt="Photo of Palaniyappan Thiagarajan" src="JAR%20文件揭密_files/p-thiagarajan.jpg" 
+width="64" height="80"></DIV>Palaniyappan Thiagarajan 是位于印度班加罗尔的 IBM Global 
+Services India 的软件工程师。他是IBM 认证的IBM WebSphere Application Server V3.5 和 IBM DB2 
+UDB V7.1 Family Fundamentals 专家。可以通过                 <A href="mailto:tpalaniy@in.ibm.com?cc=tpalaniy@in.ibm.com">mailto:tpalaniy@in.ibm.com?cc=tpalaniy@in.ibm.com</A>
+与 Palaniyappan 联系。	            </DIV>
+<P></P>
+<P><STRONG>简介：</STRONG>&nbsp;大多数 Java 程序员都熟悉对 JAR 文件的基本操作。但是只有少数程序员了解 JAR 文件格式的  
+          <EM>强大功能</EM>。在本文中，作者探讨了 JAR 格式的许多功能和优势，包括打包、可执行的 JAR 文件、安全性和索引。</P><!-- <p class="ibm-no-print"><div id="dw-tag-this" class="ibm-no-print"></div><div id="interestShow" class="ibm-no-print"></div></p> -->
+<DIV id="dw-tag-content" class="ibm-no-print"></DIV>
+<DIV id="dw-moretags-access" class="ibm-access"></DIV>
+<P class="ibm-no-print">
+<DIV id="dw-tag-this" class="ibm-no-print"><A class="ibm-external-link" onclick="jQuery.launchTagThisWindow(); return false;" 
+href="http://www.ibm.com/developerworks/cn/java/j-jar/#">标记本文！</A></DIV>
+<DIV id="interestShow" class="ibm-no-print"></DIV>
+<P></P></DIV>
+<DIV class="ibm-column ibm-second">
+<P class="leading"><B>发布日期：</B>&nbsp;2003 年 11 月 15 日  <BR><B>级别：</B>&nbsp;初级    
+<BR><STRONG>访问情况</STRONG>&nbsp;14151 次浏览  <BR><STRONG>建议：</STRONG>&nbsp;<SPAN 
+id="nCmts"><IMG alt="" src="JAR%20文件揭密_files/circle-preloader.gif" width="50" 
+height="12"><IMG alt="" src="JAR%20文件揭密_files/c.gif" width="1" 
+height="14"></SPAN><!-- Rating_Area_Begin --><!-- Ensure that div id is based on input id and ends with -widget --><INPUT 
+id="art-rating" name="ratinga" value="0" type="hidden">
+<DIV id="art-rating-widget"></DIV>
+<SCRIPT language="JavaScript" type="text/javascript">
+// <![CDATA[
+ //  widget div id and article id as args
+   window.artRating.init('art-rating-widget');
+// ]]>
+</SCRIPT>
+<!-- Rating_Area_End -->
+<P></P></DIV></DIV></DIV><!-- dW_Summary_Area_END --><!-- CONTENT_BODY -->
+<DIV id="ibm-content-body"><!-- MAIN_COLUMN_BEGIN -->
+<DIV id="ibm-content-main"><!-- Related_Searches_Area_And_Overlays_Begin --><!-- MAIN_COLUMN_CONTAINER_BEGIN -->
+<DIV class="ibm-container"><!-- MAIN_COLUMN_CONTENT_BEGIN -->
+<P><A name="1"><SPAN class="atitle">JAR 文件是什么？</SPAN></A></P>
+<P>JAR 文件格式以流行的 ZIP 文件格式为基础，用于将许多个文件聚集为一个文件。与 ZIP 文件不同的是，JAR 
+文件不仅用于压缩和发布，而且还用于部署和封装库、组件和插件程序，并可被像编译器和 JVM 这样的工具直接使用。在 JAR 中包含特殊的文件，如 
+manifests 和部署描述符，用来指示工具如何处理特定的 JAR。</P>
+<P>一个 JAR 文件可以用于：</P>
+<UL>
+  <LI>用于发布和使用类库</LI>
+  <LI>作为应用程序和扩展的构建单元</LI>
+  <LI>作为组件、applet 或者插件程序的部署单位</LI>
+  <LI>用于打包与组件相关联的辅助资源</LI></UL>
+<P>JAR 文件格式提供了许多优势和功能，其中很多是传统的压缩格式如 ZIP 或者 TAR 所没有提供的。它们包括：</P>
+<UL>
+  <LI><STRONG>安全性。</STRONG>可以对 JAR 
+  文件内容加上数字化签名。这样，能够识别签名的工具就可以有选择地为您授予软件安全特权，这是其他文件做不到的，它还可以检测代码是否被篡改过。           
+           <BR></LI>
+  <LI><STRONG>减少下载时间。</STRONG>如果一个 applet 捆绑到一个 JAR 文件中，那么浏览器就可以在一个 HTTP 事务中下载这个 
+  applet 的类文件和相关的资源，而不是对每一个文件打开一个新连接。                    <BR></LI>
+  <LI><STRONG>压缩。</STRONG>JAR 格式允许您压缩文件以提高存储效率。                    <BR></LI>
+  <LI><STRONG>传输平台扩展。</STRONG>Java 扩展框架 (Java Extensions Framework) 提供了向 Java 
+  核心平台添加功能的方法，这些扩展是用 JAR 文件打包的 (Java 3D 和 JavaMail 就是由 Sun 开发的扩展例子 )。            
+          <BR></LI>
+  <LI><STRONG>包密封。</STRONG>存储在 JAR 文件中的包可以选择进行                    
+  <EM>密封</EM>，以增强版本一致性和安全性。密封一个包意味着包中的所有类都必须在同一 JAR 文件中找到。                    
+  <BR></LI>
+  <LI><STRONG>包版本控制。</STRONG>一个 JAR 文件可以包含有关它所包含的文件的数据，如厂商和版本信息。                 
+     <BR></LI>
+  <LI><STRONG>可移植性。</STRONG>处理 JAR 文件的机制是 Java 平台核心 API 的标准部分。               
+  </LI></UL>
+<P><A name="N100C8"><SPAN class="smalltitle">压缩的和未压缩的 JAR</SPAN></A></P>
+<P><CODE>jar</CODE>工具 ( 有关细节参阅                 <A href="http://www.ibm.com/developerworks/cn/java/j-jar/#jartool"><CODE>jar</CODE> 
+工具               </A>) 在默认情况下压缩文件。未压缩的 JAR 文件一般可以比压缩过的 JAR 
+文件更快地装载，因为在装载过程中要解压缩文件，但是未压缩的文件在网络上的下载时间可能更长。           </P>
+<P><A name="N100DD"><SPAN class="smalltitle">META-INF 目录</SPAN></A></P>
+<P>大多数 JAR 文件包含一个 META-INF 目录，它用于存储包和扩展的配置数据，如安全性和版本信息。Java 2 平台识别并解释 META-INF 
+目录中的下述文件和目录，以便配置应用程序、扩展和类装载器：</P>
+<UL>
+  <LI><STRONG>MANIFEST.MF。</STRONG>这个                    <EM>manifest 
+  文件</EM>定义了与扩展和包相关的数据。                    <BR></LI>
+  <LI><STRONG>INDEX.LIST。</STRONG>这个文件由                     
+  <CODE>jar</CODE>工具的新选项                     
+  <CODE>-i</CODE>生成，它包含在应用程序或者扩展中定义的包的位置信息。它是 JarIndex 实现的一部分，并由类装载器用于加速类装载过程。   
+                   <BR></LI>
+  <LI><STRONG><EM>xxx</EM>.SF。                   </STRONG>这是 JAR 文件的签名文件。占位符     
+                 <EM>xxx</EM>标识了签名者。                    <BR></LI>
+  <LI><STRONG><EM>xxx</EM>.DSA。                   
+  </STRONG>与签名文件相关联的签名程序块文件，它存储了用于签名 JAR 文件的公共签名。               </LI></UL>
+<P><A name="jartool"><SPAN class="smalltitle">jar 工具</SPAN></A></P>
+<P>为了用 JAR 文件执行基本的任务，要使用作为 Java Development Kit 的一部分提供的 Java Archive Tool  (     
+            <CODE>jar</CODE>工具 )。用                 <CODE>jar</CODE>命令调用          
+       <CODE>jar</CODE>工具。表 1 显示了一些常见的应用：           </P>
+<P><A name="N10130"><SPAN class="smalltitle">表 1. 常见的                 
+<CODE>jar</CODE>工具用法           </SPAN></A></P>
+<TABLE class="ibm-data-table" border="1" cellSpacing="0" summary="" cellPadding="3" 
+width="100%">
+  <TBODY>
+  <TR>
+    <TD><STRONG>功能</STRONG></TD>
+    <TD><STRONG>命令</STRONG></TD></TR>
+  <TR>
+    <TD>用一个单独的文件创建一个 JAR 文件</TD>
+    <TD>jar cf jar-file input-file...</TD></TR>
+  <TR>
+    <TD>用一个目录创建一个 JAR 文件</TD>
+    <TD>jar cf jar-file dir-name</TD></TR>
+  <TR>
+    <TD>创建一个未压缩的 JAR 文件</TD>
+    <TD>jar cf0 jar-file dir-name</TD></TR>
+  <TR>
+    <TD>更新一个 JAR 文件</TD>
+    <TD>jar uf jar-file input-file...</TD></TR>
+  <TR>
+    <TD>查看一个 JAR 文件的内容</TD>
+    <TD>jar tf jar-file</TD></TR>
+  <TR>
+    <TD>提取一个 JAR 文件的内容</TD>
+    <TD>jar xf jar-file</TD></TR>
+  <TR>
+    <TD>从一个 JAR 文件中提取特定的文件</TD>
+    <TD>jar xf jar-file archived-file...</TD></TR>
+  <TR>
+    <TD>运行一个打包为可执行 JAR 文件的应用程序</TD>
+    <TD>java -jar app.jar</TD></TR></TBODY></TABLE>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P>
+<P><A name="2"><SPAN class="atitle">可执行的 JAR</SPAN></A></P>
+<P>一个                <EM>可执行的 jar</EM>文件是一个自包含的 Java 应用程序，它存储在特别配置的 JAR 文件中，可以由 
+JVM 直接执行它而无需事先提取文件或者设置类路径。要运行存储在非可执行的 JAR 
+中的应用程序，必须将它加入到您的类路径中，并用名字调用应用程序的主类。但是使用可执行的 JAR 
+文件，我们可以不用提取它或者知道主要入口点就可以运行一个应用程序。可执行 JAR 有助于方便发布和执行 Java 应用程序。           </P>
+<P><A name="N101AA"><SPAN class="smalltitle">创建可执行 JAR</SPAN></A></P>
+<P>创建一个可执行 JAR 很容易。首先将所有应用程序代码放到一个目录中。假设应用程序中的主类是                 
+<CODE>com.mycompany.myapp.Sample</CODE>。您要创建一个包含应用程序代码的 JAR 文件并标识出主类。为此，在某个位置 ( 
+不是在应用程序目录中 ) 创建一个名为                 <CODE>manifest</CODE>的文件，并在其中加入以下一行：         
+  </P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> Main-Class: com.mycompany.myapp.Sample 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>然后，像这样创建 JAR 文件：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> jar cmf manifest ExecutableJar.jar application-dir 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>所要做的就是这些了 -- 现在可以用                 <CODE>java -jar</CODE>执行这个 JAR 文件 
+ExecutableJar.jar。           </P>
+<P>一个可执行的 JAR 必须通过 menifest 文件的头引用它所需要的所有其他从属 JAR。如果使用了                 
+<CODE>-jar</CODE>选项，那么环境变量 CLASSPATH 和在命令行中指定的所有类路径都被 JVM 所忽略。           </P>
+<P><A name="N101D4"><SPAN class="smalltitle">启动可执行 JAR</SPAN></A></P>
+<P>既然我们已经将自己的应用程序打包到了一个名为 ExecutableJar.jar 的可执行 JAR 
+中了，那么我们就可以用下面的命令直接从文件启动这个应用程序：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> java -jar ExecutableJar.jar 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P>
+<P><A name="3"><SPAN class="atitle">包密封</SPAN></A></P>
+<P>密封 JAR 文件中的一个包意味着在这个包中定义的所有类都必须在同一个 JAR 
+文件中找到。这使包的作者可以增强打包类之间的版本一致性。密封还提供了防止代码篡改的手段。</P>
+<P>要密封包，需要在 JAR 的 manifest 文件中为包添加一个                 
+<CODE>Name</CODE>头，然后加上值为“true”的                 <CODE>Sealed</CODE>头。与可执行的 JAR 
+一样，可以在创建 JAR 时，通过指定一个具有适当头元素的 manifest 文件密封一个 JAR，如下所示：           </P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> Name: com/samplePackage/ 
+ Sealed: true 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P><CODE>Name</CODE>头标识出包的相对路径名。它以一个“/”结束以与文件名区别。在                 
+<CODE>Name</CODE>头后面第一个空行之前的所有头都作用于在                 
+<CODE>Name</CODE>头中指定的文件或者包。在上述例子中，因为                 <CODE>Sealed</CODE>头出现在    
+             <CODE>Name</CODE>头后并且中间没有空行，所以                 
+<CODE>Sealed</CODE>头将被解释为只应用到包                 <CODE>com/samplePackage</CODE>上。  
+         </P>
+<P>如果试图从密封包所在的 JAR 文件以外的其他地方装载密封包中的一个类，那么 JVM 将抛出一个                 
+<CODE>SecurityException</CODE>。           </P>
+<P><A name="IDAM1WVB"></A>扩展打包                <BR>扩展为 Java 平台增加了功能，在 JAR 
+文件格式中已经加入了扩展机制。扩展机制使得 JAR 文件可以通过 manifest 文件中的                 
+<CODE>Class-Path</CODE>头指定所需要的其他 JAR 文件。           </P>
+<P>假设 extension1.jar 和 extension2.jar 是同一个目录中的两个 JAR 文件，extension1.jar 的 
+manifest 文件包含以下头：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> Class-Path: extension2.jar 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>这个头表明 extension2.jar 中的类是 extension1.jar 中的类的                
+<EM>扩展类</EM>。extension1.jar 中的类可以调用 extension2.jar 中的类，并且不要求 extension2.jar 
+处在类路径中。           </P>
+<P>在装载使用扩展机制的 JAR 时，JVM 会高效而自动地将在                 <CODE>Class-Path</CODE>头中引用的 
+JAR 添加到类路径中。不过，扩展 JAR 路径被解释为相对路径，所以一般来说，扩展 JAR 必须存储在引用它的 JAR 所在的同一目录中。	          
+ </P>
+<P>例如，假设类                 <CODE>ExtensionClient</CODE>引用了类                 
+<CODE>ExtensionDemo</CODE>, 它捆绑在一个名为 ExtensionClient.jar 的 JAR 文件中，而类            
+     <CODE>ExtensionDemo</CODE>则捆绑在 ExtensionDemo.jar 中。为了使 ExtensionDemo.jar 
+可以成为扩展，必须将 ExtensionDemo.jar 列在 ExtensionClient.jar 的 manifest 的                 
+<CODE>Class-Path</CODE>头中，如下所示：           </P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> Manifest-Version: 1.0 
+ Class-Path: ExtensionDemo.jar 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>在这个 manifest 中                 <CODE>Class-Path</CODE>头的值是没有指定路径的 
+ExtensionDemo.jar，表明 ExtensionDemo.jar 与 ExtensionClient JAR 文件处在同一目录中。          
+ </P>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P>
+<P><A name="4"><SPAN class="atitle">JAR 文件中的安全性</SPAN></A></P>
+<P>JAR 文件可以用                 <CODE>jarsigner</CODE>工具或者直接通过                 
+<CODE>java.security</CODE>API 签名。一个签名的 JAR 文件与原来的 JAR 文件完全相同，只是更新了它的 manifest，并在 
+META-INF 目录中增加了两个文件，一个签名文件和一个签名块文件。           </P>
+<P>JAR 文件是用一个存储在                <EM>Keystore</EM>数据库中的证书签名的。存储在 keystore 
+中的证书有密码保护，必须向                 <CODE>jarsigner</CODE>工具提供这个密码才能对 JAR 文件签名。        
+   </P><BR><A name="IDAV3WVB"><B>图 1. Keystore 数据库</B></A><BR><IMG alt="Keystore 数据库" 
+src="JAR%20文件揭密_files/keystoredatabase.gif" width="324" height="117"><BR>
+<P>JAR 的每一位签名者都由在 JAR 文件的 META-INF 目录中的一个具有 .SF 扩展名的签名文件表示。这个文件的格式类似于 manifest 
+文件 -- 一组 RFC-822 头。如下所示，它的组成包括一个主要部分，它包括了由签名者提供的信息、但是不特别针对任何特定的 JAR 
+文件项，还有一系列的单独的项，这些项也必须包含在 menifest 文件中。在验证一个签名的 JAR 时，将签名文件的摘要值与对 JAR 
+文件中的相应项计算的摘要值进行比较。</P><BR><A name="IDAA4WVB"><B>清单 1. 签名 JAR 中的 Manifest 和 
+signature 文件</B></A><BR>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode">Contents of signature file META-INF/MANIFEST.MF 
+ Manifest-Version: 1.0 
+ Created-By: 1.3.0 (Sun Microsystems Inc.) 
+ Name: Sample.java 
+ SHA1-Digest: 3+DdYW8INICtyG8ZarHlFxX0W6g= 
+ Name: Sample.class 
+ SHA1-Digest: YJ5yQHBZBJ3SsTNcHJFqUkfWEmI= 
+ Contents of signature file META-INF/JAMES.SF 
+ Signature-Version: 1.0 
+ SHA1-Digest-Manifest: HBstZOJBuuTJ6QMIdB90T8sjaOM= 
+ Created-By: 1.3.0 (Sun Microsystems Inc.) 
+ Name: Sample.java 
+ SHA1-Digest: qipMDrkurQcKwnyIlI3Jtrnia8Q= 
+ Name: Sample.class 
+ SHA1-Digest: pT2DYby8QXPcCzv2NwpLxd8p4G4= 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P><A name="N10297"><SPAN class="smalltitle">数字签名</SPAN></A></P>
+<P>一个数字签名是 .SF 签名文件的已签名版本。数字签名文件是二进制文件，并且与 .SF 文件有相同的文件名，但是扩展名不同。根据数字签名的类型 -- 
+RSA、DSA 或者 PGP -- 以及用于签名 JAR 的证书类型而有不同的扩展名。</P>
+<P><A name="N102A0"><SPAN class="smalltitle">Keystore</SPAN></A></P>
+<P>要签名一个 JAR 文件，必须首先有一个私钥。私钥及其相关的公钥证书存储在名为                 
+<CODE>keystores</CODE>的、有密码保护的数据库中。JDK 包含创建和修改 keystores 的工具。keystore 
+中的每一个密钥都可以用一个别名标识，它通常是拥有这个密钥的签名者的名字。           </P>
+<P>所有 keystore 项 ( 密钥和信任的证书项 ) 都是用唯一别名访问的。别名是在用                 <CODE>keytool 
+-genkey</CODE>命令生成密钥对 ( 公钥和私钥 ) 并在 keystore 中添加项时指定的。之后的                 
+<CODE>keytool</CODE>命令必须使用同样的别名引用这一项。           </P>
+<P>例如，要用别名“james”生成一个新的公钥 / 私钥对并将公钥包装到自签名的证书中，要使用下述命令：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> keytool -genkey -alias james -keypass jamespass 
+        -validity 80 -keystore jamesKeyStore 
+        -storepass jamesKeyStorePass 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>这个命令序列指定了一个初始密码“jamespass”，后续的命令在访问 keystore 
+“jamesKeyStore”中与别名“james”相关联的私钥时，就需要这个密码。如果 keystore“jamesKeyStore”不存在，则        
+         <CODE>keytool</CODE>会自动创建它。           </P>
+<P><A name="N102C6"><SPAN class="smalltitle">jarsigner 工具</SPAN></A></P>
+<P><CODE>jarsigner</CODE>工具使用 keystore 生成或者验证 JAR 文件的数字签名。           </P>
+<P>假设像上述例子那样创建了 keystore “jamesKeyStore”，并且它包含一个别名为“james”的密钥，可以用下面的命令签名一个 JAR 
+文件：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> jarsigner -keystore jamesKeyStore -storepass jamesKeyStorePass 
+          -keypass jamespass -signedjar SSample.jar Sample.jar james 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>这个命令用密码“jamesKeyStorePass”从名为“jamesKeyStore”的 keystore 
+中提出别名为“james”、密码为“jamespass”的密钥，并对 Sample.jar 文件签名、创建一个签名的 JAR -- 
+SSample.jar。</P>
+<P><CODE>jarsigner</CODE>工具还可以验证一个签名的 JAR 文件，这种操作比签名 JAR 文件要简单得多，只需执行以下命令：       
+    </P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> jarsigner -verify SSample.jar 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>如果签名的 JAR 文件没有被篡改过，那么                 <CODE>jarsigner</CODE>工具就会告诉您 JAR 
+通过验证了。否则，它会抛出一个                 <CODE>SecurityException</CODE>， 表明哪些文件没有通过验证。    
+       </P>
+<P>还可以用                 <CODE>java.util.jar</CODE>和                 
+<CODE>java.security</CODE>API 以编程方式签名 JAR( 有关细节参阅                <A href="http://www.ibm.com/developerworks/cn/java/j-jar/#resources">参考资料</A>)。也可以使用像 
+Netscape Object Signing  Tool 这样的工具。           </P>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P>
+<P><A name="5"><SPAN class="atitle">JAR 索引</SPAN></A></P>
+<P>如果一个应用程序或者 applet 捆绑到多个 JAR 
+文件中，那么类装载器就使用一个简单的线性搜索算法搜索类路径中的每一个元素，这使类装载器可能要下载并打开许多个 JAR 
+文件，直到找到所要的类或者资源。如果类装载器试图寻找一个不存在的资源，那么在应用程序或者 applet 中的所有 JAR 文件都会下载。对于大型的网络应用程序和 
+applet，这会导致启动缓慢、响应迟缓并浪费带宽。</P>
+<P>从 JDK 1.3 以后，JAR 文件格式开始支持索引以优化网络应用程序中类的搜索过程，特别是 applet。JarIndex 机制收集在 applet 
+或者应用程序中定义的所有 JAR 文件的内容，并将这些信息存储到第一个 JAR 文件中的索引文件中。下载了第一个 JAR 文件后，applet 
+类装载器将使用收集的内容信息高效地装载 JAR 文件。这个目录信息存储在根 JAR 文件的 META-INF 目录中的一个名为 INDEX.LIST 
+的简单文本文件中。</P>
+<P><A name="IDA3BXVB"></A>创建一个 JarIndex                 <BR>可以通过在                
+ <CODE>jar</CODE>命令中指定                 <CODE>-i</CODE>选项创建一个 
+JarIndex。假设我们的目录结构如下图所示：           </P><BR><A name="IDAOCXVB"><B>图 2. JarIndex 
+</B></A><BR><IMG alt="JarIndex Demo" src="JAR%20文件揭密_files/jarindex.gif" width="329" 
+height="163"><BR>
+<P>您将使用下述命令为 JarIndex_Main.jar、JarIndex_test.jar 和 JarIndex_test1.jar 
+创建一个索引文件：</P>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> jar -i JarIndex_Main.jar JarIndex_test.jar SampleDir/JarIndex_test1.jar 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<P>INDEX.LIST 文件的格式很简单，包含每个已索引的 JAR 文件中包含的包或者类的名字，如清单 2 所示：</P><BR><A name="IDA3CXVB"><B>清单 
+2. JarIndex INDEX.LIST 文件示例</B></A><BR>
+<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+  <TBODY>
+  <TR>
+    <TD class="code-outline"><PRE class="displaycode"> JarIndex-Version: 1.0 
+ JarIndex_Main.jar 
+ sp 
+ JarIndex_test.jar 
+ Sample 
+ SampleDir/JarIndex_test1.jar 
+ org 
+ org/apache 
+ org/apache/xerces 
+ org/apache/xerces/framework 
+ org/apache/xerces/framework/xml4j 
+</PRE></TD></TR></TBODY></TABLE><BR>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P>
+<P><A name="6"><SPAN class="atitle">结束语</SPAN></A></P>
+<P>JAR 格式远远超出了一种压缩格式，它有许多可以改进效率、安全性和组织 Java 应用程序的功能。因为这些功能已经建立在核心平台 -- 
+包括编译器和类装载器 -- 中了，所以开发人员可以利用 JAR 文件格式的能力简化和改进开发和部署过程。.</P><!-- CMA ID: 53058 --> <!-- Site ID: 10 --> 
+<!-- XSLT stylesheet used to transform this file: dw-document-html-6.0.xsl -->
+<BR>
+<P><A name="resources"><SPAN class="atitle">参考资料 </SPAN></A></P>
+<UL>
+  <LI>您可以参阅本文在 developerWorks 全球站点上的                    <A href="http://www.ibm.com/developerworks/library/j-jar/index.html?S_TACT=105AGX52&amp;S_CMP=cn-a-j">英文原文</A>. 
+                 <BR><BR></LI>
+  <LI>参阅                    <A href="http://java.sun.com/docs/books/tutorial/jar/basics/index.html">jar</A>
+  实用程序的命令行选项的文档。                    <BR><BR><BR></LI>
+  <LI>Raffi Krikorian 在 ONJava 上发表的文章提供了有关                    <A href="http://www.onjava.com/pub/a/onjava/2001/04/12/signing_jar.html?page=1">programmatically 
+   signing a JAR file</A>的帮助。                    <BR><BR><BR></LI>
+  <LI>文章“                    <A href="http://www.ibm.com/developerworks/cn/java/j-webstart/">Java 
+   Web Start</A>”(                     <EM>developerWorks</EM>，2001 年 9 月 ) 
+  描述了如何使用这种技术，以便允许应用程序可以指定所需的 JAR 文件并动态下载它们。                    
+<BR><BR><BR></LI>
+  <LI>在                    <A 
+  href="http://www.ibm.com/developerworks/cn/java/"><EM>developerWorks</EM> Java 
+  技术专区                   </A>上可以找到数百篇关于 Java 编程的各个方面的文章。                    
+  <BR><BR><BR></LI></UL>
+<P><A name="author"><SPAN class="atitle">作者简介</SPAN></A></P>
+<DIV class="ibm-container ibm-portrait-module ibm-alternate-two">
+<DIV class="ibm-container-body"><IMG class="dw-author-img" alt="Photo of Pagadala Suresh" 
+src="JAR%20文件揭密_files/p-suresh.jpg" width="64" height="80">
+<P><A name="author1"> </A>Pagadala J. Suresh 是 IBM Global Services India 
+的软件工程师。他擅长的领域包括 Java 技术、WebSphere Application Server 和 WebSphere Studio 
+Application Developer (WSAD)、Ariba Buyer。他参与了 WebSphere 的 IBM Redbook 项目。可以通过    
+             <A 
+href="mailto:pjsuresh@in.ibm.com?cc=pjsuresh@in.ibm.com">mailto:pjsuresh@in.ibm.com?cc=pjsuresh@in.ibm.com</A>
+与 Pagadala 联系。	            </P></DIV>
+<DIV class="ibm-container-body"><IMG class="dw-author-img" alt="Photo of Palaniyappan Thiagarajan" 
+src="JAR%20文件揭密_files/p-thiagarajan.jpg" width="64" height="80">
+<P><A name="author2"> </A>Palaniyappan Thiagarajan 是位于印度班加罗尔的 IBM Global 
+Services India 的软件工程师。他是IBM 认证的IBM WebSphere Application Server V3.5 和 IBM DB2 
+UDB V7.1 Family Fundamentals 专家。可以通过                 <A href="mailto:tpalaniy@in.ibm.com?cc=tpalaniy@in.ibm.com">mailto:tpalaniy@in.ibm.com?cc=tpalaniy@in.ibm.com</A>
+与 Palaniyappan 联系。	            </P></DIV></DIV><!-- MAIN_COLUMN_CONTENT_END --><!-- INLINE_COMMENTS_START -->
+<P class="ibm-no-print"><SPAN class="atitle"><A 
+name="icomments">建议</A></SPAN></P>
+<DIV id="dw-icomments-container" class="ibm-no-print">
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV>
+<DIV class="ibm-alternate-rule">
+<HR>
+</DIV><!-- Comment_Script --><A id="comments" href="http://www.ibm.com/developerworks/cn/java/j-jar/comments"></A>
+<SCRIPT language="JavaScript" type="text/javascript">// <![CDATA[
+dwc = {};
+dwc.cmts = '条评论';
+dwc.signIn = '登录';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.cmt = '评论：';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+// ]]>
+    </SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/insertcomment.js">//</SCRIPT>
+
+<DIV id="threadShow"></DIV>
+<SCRIPT language="JavaScript" type="text/javascript">
+      // <![CDATA[
+jQuery('threadShow').insertComment('95%',5,'nCmts','icomments');
+// ]]>
+    </SCRIPT>
+</DIV><!-- INLINE_COMMENTS_END -->
+<P class="ibm-ind-link ibm-back-to-top"><A class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#ibm-pcon">回页首</A></P><!-- Overlays --><!-- lk - pull in overlays from ww when required on cn --></DIV><!-- MAIN_COLUMN_CONTAINER_END --><!-- Rating_Meta_BEGIN --><!--Rating_Meta_BEGIN-->
+<DIV 
+class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</DIV>
+<DIV class="metavalue">SITE_ID=10</DIV>
+<DIV class="metavalue">Zone=Java technology</DIV>
+<DIV class="metavalue">ArticleID=53058</DIV>
+<DIV class="metavalue">ArticleTitle=JAR 文件揭密</DIV>
+<DIV class="metavalue">publish-date=11152003</DIV>
+<DIV class="metavalue">author1-email=pjsuresh@in.ibm.com</DIV>
+<DIV class="metavalue">author1-email-cc=pjsuresh@in.ibm.com</DIV>
+<DIV class="metavalue">author2-email=tpalaniy@in.ibm.com</DIV>
+<DIV class="metavalue">author2-email-cc=tpalaniy@in.ibm.com</DIV>
+<SCRIPT language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g, '%3C')+'</div>');</SCRIPT>
+<!--Rating_Meta_END--><!-- Rating_Meta_END --></DIV><!-- MAIN_COLUMN_END--><!-- RIGHT_COLUMN_BEGIN -->
+<DIV id="ibm-content-sidebar"><!-- RIGHT_COLUMN_CONTENT_BEGIN -->
+<DIV class="ibm-container">
+<H2>内容</H2>
+<DIV class="ibm-container-body"><IMG alt="" src="JAR%20文件揭密_files/c(1).gif" 
+width="1" height="1">
+<UL class="ibm-bullet-list">
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#1">JAR 
+  文件是什么？</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#2">可执行的 
+  JAR</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#3">包密封</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#4">JAR 
+  文件中的安全性</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#5">JAR 
+  索引</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#6">结束语</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#resources">参考资料 
+  </A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#author">作者简介</A></LI>
+  <LI><A class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#icomments">建议</A></LI></UL></DIV></DIV><!-- Tagging_Start -->
+<DIV id="dw-tag-cloud-container" class="ibm-container dw-hidetag">
+<H2>标签</H2>
+<DIV id="dw-tag-help"><A id="dwtagtip" class="dwauthor" rel="#tagtip"><IMG alt="Help" 
+align="top" src="JAR%20文件揭密_files/help_icon.gif" width="16" 
+height="16"></A></DIV>
+<DIV id="tagtip" class="dwauthor-onload-state ibm-no-print">使用 
+<STRONG>搜索</STRONG> 文本框在 My developerWorks 中查找包含该标签的所有内容。
+<P>使用 <STRONG>滑动条</STRONG> 调节标签的数量。</P>
+<P><STRONG>热门标签</STRONG> 显示了特定专区最受欢迎的标签（例如 Java technology，Linux，WebSphere）。</P>
+<P><STRONG>我的标签</STRONG> 显示了特定专区您标记的标签（例如 Java 
+technology，Linux，WebSphere）。</P></DIV>
+<DIV class="ibm-access">使用搜索文本框在 My developerWorks 中查找包含该标签的所有内容。<EM>热门标签</EM> 
+显示了特定专区最受欢迎的标签（例如 Java technology，Linux，WebSphere）。<EM>我的标签</EM> 
+显示了特定专区您标记的标签（例如 Java technology，Linux，WebSphere）。</DIV>
+<DIV class="ibm-container-body">
+<DIV class="dw-tag-search">
+<FORM id="actualtagform" onsubmit="popupform(this, 'join')" method="get" action="//www.ibm.com/developerworks/mydeveloperworks/bookmarks/html">
+<P><LABEL for="tagfield"><STRONG>搜索所有标签</STRONG></LABEL><INPUT name="lang" 
+value="zh" type="hidden"><INPUT id="tagfield" name="tag" maxLength="20" size="17" 
+type="text">&nbsp;<INPUT class="ibm-btn-view" title="提交搜索" alt="submit search" 
+value="Search" src="JAR%20文件揭密_files/short-btn.gif" 
+type="image"></P></FORM></DIV>
+<DIV class="ibm-rule">
+<HR>
+</DIV>
+<DIV id="dw-tag-select">
+<DIV id="dw-tag-select-popular">
+<P><STRONG>热门文章标签</STRONG>&nbsp;|&nbsp;<BR><A id="a-my" 
+href="javascript:;">我的文章标签</A><A class="ibm-access" href="http://www.ibm.com/developerworks/cn/java/j-jar/#dw-tag-access">跳转到标签列表</A></P></DIV>
+<DIV id="dw-tag-select-my" class="dw-hidetag">
+<P><A id="a-popular" 
+href="javascript:;">热门文章标签</A>&nbsp;|&nbsp;<BR><STRONG>我的文章标签</STRONG></P><A 
+class="ibm-access" href="http://www.ibm.com/developerworks/cn/java/j-jar/#dw-tag-access">跳转到标签列表</A></DIV>
+<DIV id="dw-tag-cloud"></DIV></DIV></DIV></DIV><!-- Tagging_End --><!-- Dig_Deeper --><!-- High_Visibility_Offer --><!-- Special_Offers --><!-- RIGHT_COLUMN_CONTENT_END --></DIV><!-- RIGHT_COLUMN_END --><!-- CONTENT_BODY_END -->
+</DIV></DIV><!-- CONTENT_END --><!-- END_IBM-PCON --></DIV><!-- FOOTER_BEGIN -->
+<DIV id="ibm-footer"><!-- IBM footer container; disabled --></DIV>
+<DIV id="ibm-page-tools-dw">
+<DIV id="dw-footer-top-row">
+<UL id="dw-foot-options">
+  <LI id="dw-print"><A class="ibm-print-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">打印此页面</A></LI></UL>
+<UL id="ibm-foot-options-dw">
+  <LI id="dw-foot-0" class="dw-foot-0-cn"><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">分享此页面</A></LI>
+  <LI id="dw-foot-1" class="dw-foot-1-cn"><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关注 
+  developerWorks</A></LI></UL></DIV><!-- TOP ROW SLIDER -->
+<DIV id="dw-page-tools-menu">
+<DIV class="ibm-ribbon-pane-dw">
+<DIV class="ibm-ribbon-section-dw"><!-- Share this page -->
+<DIV class="dw-footer-columns">
+<DIV class="dw-footer-col-3-1">
+<H2>分享此页面：</H2>
+<UL class="ibm-link-list">
+  <LI><A id="dw-foot-0-0" class="ibm-facebook-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">Facebook</A></LI>
+  <LI><A class="ibm-linkedin-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">LinkedIn</A></LI>
+  <LI><A class="ibm-twitter-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">Twitter</A></LI></UL></DIV>
+<DIV class="dw-footer-col-3-2">
+<UL class="ibm-link-list">
+  <LI><A class="ibm-delicious-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">Delicious</A></LI>
+  <LI><A class="ibm-digg-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">Digg</A></LI><!--	<li><a class="ibm-stumbleupon" href="#">StumbleUpon</a></li> --></UL></DIV>
+<DIV class="dw-footer-col-3-3">
+<UL class="ibm-link-list">
+  <LI><A class="ibm-email-link" href="http://www.ibm.com/developerworks/cn/java/j-jar/#">发送此页面</A></LI></UL></DIV>
+<DIV class="dw-footer-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV><!-- Follow developerWorks -->
+<DIV class="dw-footer-columns">
+<DIV class="dw-footer-col-1-1">
+<H2>关注 developerWorks：</H2>
+<UL class="ibm-link-list">
+  <LI><A id="dw-foot-1-0" class="ibm-twitter-link" href="http://www.twitter.com/dwchina">Twitter</A></LI></UL></DIV>
+<DIV class="dw-footer-close">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/j-jar/#">关闭 
+[x]</A></LI></UL></DIV></DIV></DIV></DIV><!-- <a class="ibm-ribbon-next">Next</a> --></DIV>
+</DIV>
+<DIV id="ibm-footer-module-dw">
+<DIV class="dw-footer-columns">
+<DIV class="dw-footer-col-6-1">
+<H2><A href="http://www.ibm.com/developerworks/cn/topics/">技术主题</A></H2>
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/aix/">AIX and UNIX</A></LI>
+  <LI class="dw-footer-newline"><A href="http://www.ibm.com/developerworks/cn/data/">Information<BR> 
+  Management</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/lotus/">Lotus</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/rational/">Rational</A></LI><!--	<li><a href="">Tivoli</a></li>  -->
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/websphere/">WebSphere</A></LI></UL>
+<UL>
+  <LI class="dw-footer-newgroup"><A href="http://www.ibm.com/developerworks/cn/cloud/">Cloud 
+  computing</A></LI><!-- <li><a href="REPLACE.HTML">Industries</a></li> --></UL></DIV>
+<DIV class="dw-footer-col-6-2">
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/java/">Java 
+  technology</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/linux/">Linux</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/opensource/">Open 
+  source</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/webservices/">SOA and web 
+  services</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/web/">Web 
+  development</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/xml/">XML</A></LI></UL>
+<H2><A href="http://www.ibm.com/developerworks/cn/topics/">更多...</A></H2></DIV>
+<DIV class="dw-footer-col-6-3">
+<H2 class="dw-footer-headonly">查找软件</H2>
+<UL>
+  <LI><A href="http://www.ibm.com/developerworks/cn/downloads/product.html">IBM 
+  产品</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/downloads/evalmethod.html">评估方式（下载，在线试用，Beta 
+  版，云）</A></LI>
+  <LI><A 
+  href="http://www.ibm.com/developerworks/cn/downloads/industry.html">行业</A></LI></UL>
+<H2 class="dw-footer-newgroup"><A href="http://www.ibm.com/developerworks/cn/offers/techbriefings/">技术讲座</A></H2><!--	<ul>
+				<li><a href="REPLACE.HTML">Briefings</a></li>
+				<li><a href="REPLACE.HTML">Webcasts</a></li>
+				<li><a href="REPLACE.HTML">Find technical events</a></li>
+			</ul> --></DIV>
+<DIV class="dw-footer-col-6-4">
+<H2><A href="https://www.ibm.com/developerworks/community/?lang=zh">社区</A></H2>
+<UL><!-- <li><a href="REPLACE.HTML">Forums</a></li> -->
+  <LI><A href="https://www.ibm.com/developerworks/community/groups/service/html/allcommunities?lang=zh">群组</A></LI>
+  <LI><A 
+  href="https://www.ibm.com/developerworks/community/blogs/?lang=zh">博客</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/mydeveloperworks/wikis/home?lang=zh">Wiki</A></LI>
+  <LI><A 
+  href="https://www.ibm.com/developerworks/community/files/app?lang=zh">文件</A></LI>
+  <LI><A 
+  href="https://www.ibm.com/developerworks/community/terms?lang=zh">使用条款与条件</A></LI>
+  <LI><A 
+  href="https://www.ibm.com/developerworks/community/report?lang=zh">报告滥用</A></LI></UL>
+<H2><A 
+href="https://www.ibm.com/developerworks/community/?lang=zh">更多...</A></H2></DIV>
+<DIV class="dw-footer-col-6-5">
+<H2 class="dw-footer-headonly">关于 developerWorks</H2>
+<UL>
+  <LI><A href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina">反馈意见</A></LI><!--	<li><a href="REPLACE.HTML">Contacts</a></li> -->
+  <LI><A href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina&amp;start=true">在线投稿</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/author/">投稿指南</A></LI>
+  <LI><A href="http://www.ibm.com/developerworks/cn/sitemap/">网站导航</A></LI>
+  <LI><A href="https://www.ibm.com/developerworks/secure/reprintreq.jsp?domain=dwchina">
+  请求转载内容</A></LI></UL>
+<H2 class="dw-footer-headonly dw-footer-newgroup">相关资源</H2>
+<UL>
+  <LI><A href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</A></LI>
+  <LI><A href="http://www-900.ibm.com/cn/ai/">IBM 教育学院教育培养计划</A></LI></UL></DIV>
+<DIV class="dw-footer-col-6-6">
+<H2><A href="http://www.ibm.com/cn/">IBM</A></H2>
+<UL>
+  <LI><A href="http://www.ibm.com/solutions/cn/zh/">解决方案</A></LI>
+  <LI><A href="http://www-01.ibm.com/software/cn/">软件</A></LI><!-- <li><a href="REPLACE.HTML">Software services</a></li> -->
+  <LI><A href="http://www.ibm.com/support/cn/zh/">支持门户</A></LI>
+  <LI><A href="http://www.ibm.com/support/documentation/cn/zh/">产品文档</A></LI>
+  <LI><A href="http://www.ibm.com/redbooks">红皮书 (英语)</A></LI>
+  <LI><A href="http://www.ibm.com/privacy/cn/zh/">隐私条约</A></LI>
+  <LI><A 
+href="http://www.ibm.com/ibm/accessibility/cn/">浏览辅助</A></LI></UL></DIV></DIV><!-- Language selector no-script --><NOSCRIPT>&lt;div 
+id="dw-footer-selectlang"&gt;			&lt;h2&gt;&lt;a 
+name="SELECTLANG"&gt;选择语言：&lt;/a&gt;&lt;/h2&gt;			&lt;ul&gt;				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/"&gt;English&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/cn/"&gt;中文&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/jp/"&gt;日本語&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/kr/"&gt;한국어&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/ru/"&gt;Русский&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/br/"&gt;Português 
+(Brasil)&lt;/a&gt;&lt;/li&gt;				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/ssa/"&gt;Español&lt;/a&gt;&lt;/li&gt;
+				&lt;li&gt;&lt;a 
+href="http://www.ibm.com/developerworks/vn/"&gt;Việt&lt;/a&gt;&lt;/li&gt;
+			&lt;/ul&gt;		&lt;/div&gt;	</NOSCRIPT></DIV> <!-- FOOTER_END --><!-- END_IBM-TOP -->
+</DIV><!-- SCRIPTS_INCLUDE_BEGIN --><!-- JQuery start -->
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/jquery.hoverIntent.minified.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/jquery.cluetip.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/ui.core-1.7.1.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/ui.slider-1.7.1.js"></SCRIPT>
+<!-- xM Masthead/Footer -->
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/jquery.tools.min.js">//</SCRIPT>
+
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/jquery.jscroll.js">//</SCRIPT>
+
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/dw_v16.js">//</SCRIPT>
+
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/flash-detect.js">//</SCRIPT>
+
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/dwsi.js">//</SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/dwjquerytags.js"></SCRIPT>
+
+<SCRIPT language="JavaScript" type="text/javascript">
+	jQuery.noConflict();     
+	// Put all your code in your document ready area
+	jQuery(document).ready(function(jQuery) {
+	// Do jQuery stuff using jQuery 
+	jQuery('a.dwauthor').cluetip({
+	local: true,
+	showTitle: false,
+	positionBy: 'bottomTop',
+	sticky: true,	
+	mouseOutClose: true,
+	closeText: '<img src="//dw1.s81c.com/developerworks/js/jquery/cluetip98/i/x.gif" alt="Close" />',
+	arrows: false,
+	dropShadow: true,
+	cluetipClass: 'dwbasic'
+	});   	
+	//tagging
+	login="false";
+	userid="";
+	whichTags = "init";
+	pCont = "";
+	mCont = "";
+	signInMCont = "";
+	accessCont = "";
+	pValue = 0;
+	mValue = 0;
+	
+	rBHash = null;
+	rBHash = new Object();
+	rBHash['viperLang'] = 'zh';
+	rBHash['urlLang'] = 'cn';
+	rBHash['tagThisWinTitle'] = '添加标签';
+	rBHash['pTags1'] = '热门标签';		
+	rBHash['pTags2'] = '热门标签结束';
+	rBHash['mTags1'] = '我的标签';
+	rBHash['mTags2'] = '我的标签结束';
+	rBHash['alt1'] = '正在加载内容';
+	rBHash['noATags'] = '没有活动的标签';
+	rBHash['signIn1'] = '请';
+	rBHash['signIn2'] = '登录';
+	rBHash['signIn3'] = '以访问';
+	rBHash['signIn4'] = '我的标签';
+	rBHash['signIn5'] = '要访问我的标签，请';
+	rBHash['signIn6'] = '登录';
+	rBHash['signIn7'] = '查看热门标签';
+	rBHash['dnameSuffix'] = '';
+
+	zoneHash = new Object();
+	zoneHash['aix'] = 'AIX and UNIX';
+	zoneHash['data'] = 'Information Management';
+	zoneHash['lotus'] = 'Lotus';
+	zoneHash['rational'] = 'Rational';
+	//zoneHash['tivoli'] = 'Tivoli zone';
+	zoneHash['websphere'] = 'WebSphere';
+	zoneHash['architecture'] = 'Technical library';
+	//zoneHash['autonomic'] = 'Technical library';
+	zoneHash['java'] = 'Java technology';
+	zoneHash['cloud'] = 'Cloud computing';
+	//zoneHash['industry'] = 'Technical library';
+	zoneHash['library'] = '文档库';
+	zoneHash['linux'] = 'Linux';
+	zoneHash['opensource'] = 'Open source';
+	//zoneHash['power'] = 'Technical library';
+	zoneHash['webservices'] = 'SOA and web services';
+	zoneHash['web'] = 'Web development';
+	zoneHash['xml'] = 'XML';
+	//zoneHash['wireless'] = 'Technical library';
+	jQuery.checkRB();
+	jQuery.getPopularTags("/developerworks/dwtags/dwjquerytabtags?lang=" + rBHash['viperLang'] + "&base=" + jQuery.getNormalizedZoneUrl(location.href));
+	jQuery.getUserTags();
+	if(jQuery.isTutorial(location.href) == "true") {
+	jQuery.getTagsForContent("/developerworks/tagging/UseCaseServlet?lang=" + rBHash['viperLang'] + "&format=maverick&cType=tutorials&use_case=geturltags&action=gettags&url=" + jQuery.normalizeUrl(location.href));
+	}
+	else {
+	jQuery.getTagsForContent("/developerworks/tagging/UseCaseServlet?lang=" + rBHash['viperLang'] + "&format=maverick&cType=articles&use_case=geturltags&action=gettags&url=" + jQuery.normalizeUrl(location.href));
+	
+	}
+	// si
+	initSI();
+	});
+</SCRIPT>
+<!-- JQuery end --><!-- Overlay js -->
+<SCRIPT language="JavaScript" type="text/javascript" src="JAR%20文件揭密_files/overlay.js"></SCRIPT>
+<!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<SCRIPT language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=1&ibmAdoptPhase=651&ibmRole=36";</SCRIPT>
+<!--END --><!-- SCRIPTS_INCLUDE_END -->
+<DIV id="ibm-metrics">
+<SCRIPT type="text/javascript" src="JAR%20文件揭密_files/stats.js">//</SCRIPT>
+</DIV></BODY></HTML>

@@ -1,0 +1,169 @@
+1 Steve Blenheim
+2 Betty Boop
+3 Igor Chevsky
+4 Norma Cord
+5 Jon DeLoach
+6 Karen Evi
+7 Red Hat
+发表于 2010 年 12 月 13 日 由 admin 
+ 60 所需 软件包但是大多数
+50 httpd-2.2.6. tar.gz 
+mysql-5.0.27.tar.gz
+php-5.2.6.tar.bz2
+ncurses-5.6.tar.gz
+freetype-2.3.5.tar.gz
+gd-2.0.35.tar.gz
+jpegsrc.v6b.tar.gz
+libmcrypt-2.5.7.tar.gz
+libpng-1.2.26.tar.gz
+libtool-1.5.24.tar.gz
+zlib-1.2.3.tar.gz
+ZendOptimizer-3.3.0a-linux-glibc21-i386.tar.gz
+55 一、安装前准备（配置yum源略）：
+#yum install gcc  gcc-c++  glibc  glibc-devel  gd  gd-devel  zlib  zlib-devel  libtool-ltdl-devel flex  autoconf  automake
+二、安装apache
+#tar zxvf httpd-2.2.6.tar.gz
+# cd httpd-2.2.6
+# ./configure  –prefix=/usr/local/apache2 –enable-so –enable-rewriter
+# make && make install
+#/usr/local/apache2/bin/apachectl start
+三、安装mysql数据库
+#tar zxvf ncurses-5.6.tar.gz 
+#cd ncurses-5.6
+#./configure 
+#make && make install
+#cd ..
+#tar zxvf mysql-5.0.27.tar.gz 
+#cd mysql-5.0.27
+#useradd mysql
+#./configure –prefix=/usr/local/mysql –localstatedir=/var/lib/mysql  –with-mysqld-user=mysql –enable-static  –with-charset=gbk
+#make && make install
+#cd /usr/local/mysql/bin/
+#./mysqld_safe  –user=mysql &
+#chown mysql -R  /usr/local/mysql/
+#chown root:mysql -R  /usr/local/mysql/
+#chgrp -R  mysql   /usr/local/mysql/
+#chgrp -R  mysql   /var/lib/mysql
+#./mysql_install_db  –user=mysql
+#cd /usr/local/mysql/
+#cp share/mysql/my-medium.cnf  /etc/my.cnf
+#cp share/mysql/mysql.server  /etc/rc.d/init.d/mysqld
+#chmod 755 /etc/rc.d/init.d/mysqld
+#chkconfig  –add mysqld
+#/etc/rc.d/init.d/mysqld  start
+#/etc/rc.d/init.d/mysqld  restart
+#bin/mysqladmin  -u root password webcc
+#bin/mysql -u root –p
+# bin/mysql -u root -p
+Enter password:
+59 Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 1 to server version: 5.0.27-log
+ 
+Type ‘help;’ or ‘\h’ for help. Type ‘\c’ to clear the buffer.
+ 
+mysql>
+mysql>quit
+四、安装GD库
+#tar zxvf freetype-2.3.5.tar.gz 
+#cd freetype-2.3.5
+#./configure  –prefix=/usr/local/freetype
+#make
+#make install
+#cd ..
+#tar zxvf jpegsrc.v6b.tar.gz
+#cd jpeg-6b/
+#mkdir /usr/local/jpeg6
+#mkdir /usr/local/jpeg6/bin
+#mkdir /usr/local/jpeg6/lib
+#mkdir /usr/local/jpeg6/include
+#mkdir /usr/local/jpeg6/man
+#mkdir /usr/local/jpeg6/man1
+#mkdir /usr/local/jpeg6/man/man1
+#./configure  –prefix=/usr/local/jpeg6/
+#make
+#make install
+#cd ..
+#tar zxvf libpng-1.2.26.tar.gz
+#cd libpng-1.2.26
+#./configure  –prefix=/usr/local/libpng
+#make
+#make install
+#cd ..
+#tar zxvf libtool-1.5.24.tar.gz
+#cd /usr/local/src/libtool-1.5.24
+#./configure 
+#make
+#make install
+#cd ..
+#tar zxvf zlib-1.2.3.tar.gz
+#cd zlib-1.2.3
+#./configure  –prefix=/usr/local/zlib
+#make
+#make install
+#cd ..
+#cd gd-2.0.35
+#./configure  –prefix=/usr/local/gd –with-jpeg=/usr/local/jpeg6/ –with-png=/usr/local/libpng –with-zlib=/usr/local/zlib/ –with-freetype=/usr/local/freetype/
+#make
+#make install
+#cd ..
+五、安装PHP以及ZendOptimizer、phpmyadmin
+#tar zxvf libmcrypt-2.5.7.tar.gz
+#cd libmcrypt-2.5.7
+#./configure  –prefix=/usr/local/libmcrypt
+#make
+#make  install
+#cd ..
+#tar zxvf php-5.2.6.tar.bz2
+#cd /usr/local/src/php-5.2.6
+#./configure –prefix=/usr/local/php5 –with-mysql=/usr/local/mysql/ –with-apxs2=/usr/local/apache2/bin/apxs –with-gd=/usr/local/gd/ –with-freetype-dir=/usr/local/freetype/ –with-jpeg-dir=/usr/local/jpeg6/ –with-png-dir=/usr/local/libpng/ –with-zlib-dir=/usr/local/zlib/ –with-mcrypt=/usr/local/libmcrypt/
+#make
+#make install
+# cp php.ini-dist  /usr/local/php5/php.ini
+#vi /usr/local/php5/php.ini
+查找extension_dir- = “./”
+修改为extension_dir- = “./include/php/ext”
+查找extension=php
+把下列各行注释号去掉
+extension=php_mbstring.dll
+extension=php_bz2.dll
+extension=php_gd2.dll
+extension=php_mysql.dll
+extension=php_exif.dll
+extension=php_soap.dll
+extension=php_mcrypt.dll
+extension=php_sockets.dll
+extension=php_mhash.dll
+extension=php_xmlrpc.dll
+extension=php_zip.dll
+#cd /usr/local/src/
+#tar zxvf ZendOptimizer-3.3.0a-linux-glibc21-i386.tar.gz
+#cd ZendOptimizer-3.3.0a-linux-glibc21-i386
+#./install
+#cd ..
+# tar jxvf phpMyAdmin-2.11.9.4-all-languages-utf-8-only.tar.bz2
+#mv phpMyAdmin-2.11.9.4-all-languages-utf-8-only /usr/local/apache/htdocs/sanjianke
+# cd /usr/local/apache/htdocs/sanjianke
+#cp libraries/config.default.php  config.inc.php
+#vi config.inc.php 修改如下几个地方：
+1、$cfg['PmaAbsoluteUri']修改成
+$cfg['PmaAbsoluteUri'] = ‘http://192.168.1.11/sanjianke/’;
+2、$cfg['Servers'][$i]['auth_type'] = ‘config’;修改成
+$cfg['Servers'][$i]['auth_type'] = ‘cookie’;（自己本机测试可不改）
+3、$cfg['Servers'][$i]['user'] = ‘root’;用户名（自己电脑里用root，若为服务器把root去掉）
+   $cfg['Servers'][$i]['password'] = ”;密码
+4、$cfg['DefaultLang'] = ‘zh-gb2312′  支持中文
+ 
+————————————————————————————————————————
+在Apache配置文件httpd.conf修改
+vi /usr/local/apache2/conf/httpd.conf
+添加
+AddType application/x-httpd-php .php
+查找index.html
+DirectoryIndex index.html 后面添加index.php
+保存
+在htdocs目录下建立index.php内容如下：
+<?php
+phpinfo();
+?>
+重启apache服务
+客户端测试:http://192.168.1.100/index.php

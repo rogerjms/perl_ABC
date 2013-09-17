@@ -1,0 +1,96 @@
+#!/usr/local/bin/perl -w
+use strict;
+my @cut;
+my $i;
+my @first;
+my @second;
+my @third;
+my @four;
+my @five;
+my @six;
+my @seven;
+my @eight;
+open ONE,">one";
+open TWO,">two";
+open THREE,">three";
+open FOUR,">four";
+open FIVE,">five";
+open SIX,">six";
+open SEVEN,">seven";
+open EIGHT,">eight";
+open CUT ,"cut";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@first,$_);
+	last if($i>5000);
+};
+#print $i;
+#pop @first;
+print ONE "@first[0..$#first-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@second,$_);
+	last if($i>10000);
+};
+#print $i;
+print TWO "$first[-1]","@second[0..$#second-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@third,$_);
+	last if($i>15000);
+};
+#print $i;
+print THREE "$second[-1]","@third[0..$#third-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@four,$_);
+	last if($i>20000);
+};
+#print $i;
+print FOUR  "$third[-1]","@four[0..$#four-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@five,$_);
+	last if($i>25000);
+};
+#print $i;
+print FIVE "$four[-1]","@five[0..$#five-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@six,$_);
+	last if($i>30000);
+};
+#print $i;
+print SIX "$five[-1]","@six[0..$#six-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@seven,$_);
+	last if($i>35000);
+};
+#print $i;
+print SEVEN "$six[-1]","@seven[0..$#seven-1]";
+while(<CUT>){
+	if(/^>.*/){
+		$i++;
+		}
+		push(@eight,$_);
+	last if($i>40000);
+};
+#print $i;
+print EIGHT "$seven[-1]","@eight";
+
+

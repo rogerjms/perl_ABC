@@ -1,0 +1,452 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Algorithm::Viterbi - Compute Viterbi path and probability</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#methods">METHODS</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+	<li><a href="#version">VERSION</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Algorithm::Viterbi - Compute Viterbi path and probability</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  <span class="keyword">use</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">;</span>
+  
+  <span class="keyword">my</span> <span class="variable">$start_probability</span> <span class="operator">=</span> <span class="operator">{</span> <span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span> <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$transition_probability</span> <span class="operator">=</span> <span class="operator">{</span>
+   <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">7</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">3</span><span class="operator">}</span><span class="operator">,</span>
+   <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">}</span><span class="operator">,</span>
+  <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$emission</span> <span class="operator">=</span> <span class="operator">{</span>
+    <span class="string">'shop'</span> <span class="operator">=&gt;</span>  <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.3'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.4'</span> <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'walk'</span> <span class="operator">=&gt;</span>  <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.6'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span> <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'clean'</span> <span class="operator">=&gt;</span> <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span> <span class="operator">}</span>
+  <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">start</span><span class="operator">(</span><span class="variable">$start_probability</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">transition</span><span class="operator">(</span><span class="variable">$transition_probability</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">emission</span><span class="operator">(</span><span class="variable">$emission_probability</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$observations</span> <span class="operator">=</span> <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'shop'</span><span class="operator">,</span> <span class="string">'clean'</span> <span class="operator">]</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$prob</span><span class="operator">,</span> <span class="variable">$v_path</span><span class="operator">,</span> <span class="variable">$v_prob</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">forward_viterbi</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="operator">--</span> <span class="keyword">or</span> <span class="operator">--</span>
+   
+  <span class="keyword">my</span> <span class="variable">$training_data</span> <span class="operator">=</span> <span class="operator">[</span>
+    <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'Sunny'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'Sunny'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'shop'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'clean'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'clean'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">...</span>
+  <span class="operator">]</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">train</span><span class="operator">(</span><span class="variable">$training_data</span><span class="operator">);</span>
+  <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$prob</span><span class="operator">,</span> <span class="variable">$v_path</span><span class="operator">,</span> <span class="variable">$v_prob</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">forward_viterbi</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">);</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>Algorithm::Viterbi computes the forward probability, the Viterbi path
+and the Viterbi probability of a sequence of observations, based on 
+a given start, emission and transition probability.
+Alternatively, the start, emission and transition probability can be 
+computed from a set of training data.</p>
+<p>The whole idea of this module is inspired by an article on the Viterbi 
+algorithm in Wikipedia, the free encyclopedia. Rather than copying all 
+text, I'm just including the link to the Wikipedia page: 
+<a href="http://en.wikipedia.org/wiki/Viterbi_algorithm">http://en.wikipedia.org/wiki/Viterbi_algorithm</a>.
+I think the page is well-written and I see no need to repeat the theory 
+here. Reading it may clarify the documentation below.</p>
+<p>
+</p>
+<hr />
+<h1><a name="methods">METHODS</a></h1>
+<dl>
+<dt><strong><a name="new" class="item">new</a></strong></dt>
+
+<dd>
+<p>Creates a new <code>Algorithm::Viterbi</code> object. 
+The following attributes can be set with the constructor:</p>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorthm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span>
+    <span class="string">start_state</span> <span class="operator">=&gt;</span> <span class="string">'$'</span><span class="operator">,</span>
+    <span class="string">unknown_emission_prob</span> <span class="operator">=&gt;</span> <span class="keyword">undef</span><span class="operator">,</span>
+    <span class="string">unknown_transition_prob</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">);</span>
+</pre>
+<p>The values of the attributes in the example are the default values.
+For a detailed description and use of these attributes, see below.</p>
+</dd>
+<dt><strong><a name="train" class="item">train</a></strong></dt>
+
+<dd>
+<p>This method computes the start, emission and transition probabilities 
+from a set of observations and their associated states.
+The probabilities are simple averages of the passed observations,
+so if you require sophisticated smoothing on the emission, start and/or
+transition, then you're better off rolling your own.</p>
+<p>The value of member start_state is a bogus state used to define the begin state of the first transition.
+By default, this state is set to '$'. You can change this by setting the variable in the constructor
+or later by accessing the member directly. See example below.</p>
+<p>This state can also be used as a separator between the beginning and end of a sequence of observations. 
+For example, you could assign this state (tag) to every end-of-sentence symbol when training on a 
+pre-tagged corpus.</p>
+<p>The set of observations is passed as a reference to an array as shown in the following example:</p>
+<pre>
+  <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+  <span class="keyword">use</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">;</span>
+  <span class="keyword">use</span> <span class="variable">Data::Dumper</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$observations</span> <span class="operator">=</span> <span class="operator">[</span>
+    <span class="operator">[</span> <span class="string">'work'</span><span class="operator">,</span> <span class="string">'rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'work'</span><span class="operator">,</span> <span class="string">'sunny'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'sunny'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'shop'</span><span class="operator">,</span> <span class="string">'rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+    <span class="operator">[</span> <span class="string">'work'</span><span class="operator">,</span> <span class="string">'rainy'</span> <span class="operator">]</span><span class="operator">,</span>
+  <span class="operator">]</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="string">start_state</span> <span class="operator">=&gt;</span> <span class="string">'###'</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">train</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="keyword">print</span> <span class="variable">Dumper</span><span class="operator">(</span><span class="variable">$v</span><span class="operator">);</span>
+</pre>
+<p>will produce:</p>
+<pre>
+  <span class="variable">$VAR1</span> <span class="operator">=</span> <span class="keyword">bless</span><span class="operator">(</span> <span class="operator">{</span>
+                 <span class="string">'transition'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                   <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                                <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span>
+                                                <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.25'</span>
+                                              <span class="operator">}</span><span class="operator">,</span>
+                                   <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                                <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span>
+                                                <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span>
+                                              <span class="operator">}</span><span class="operator">,</span>
+                                   <span class="string">'###'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                              <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.25'</span>
+                                            <span class="operator">}</span>
+                                 <span class="operator">}</span><span class="operator">,</span>
+                 <span class="string">'emission'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                 <span class="string">'shop'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                             <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.25'</span>
+                                           <span class="operator">}</span><span class="operator">,</span>
+                                 <span class="string">'walk'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                             <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span>
+                                             <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.25'</span>
+                                           <span class="operator">}</span><span class="operator">,</span>
+                                 <span class="string">'work'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                                             <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span>
+                                             <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span>
+                                           <span class="operator">}</span>
+                               <span class="operator">}</span><span class="operator">,</span>
+                 <span class="string">'start_state'</span> <span class="operator">=&gt;</span> <span class="string">'###'</span><span class="operator">,</span>
+                 <span class="string">'states'</span> <span class="operator">=&gt;</span> <span class="operator">[</span>
+                               <span class="string">'sunny'</span><span class="operator">,</span>
+                               <span class="string">'rainy'</span>
+                             <span class="operator">]</span><span class="operator">,</span>
+                 <span class="string">'unknown_transition_prob'</span> <span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">,</span>
+                 <span class="string">'start'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                              <span class="string">'sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.333333333333333'</span><span class="operator">,</span>
+                              <span class="string">'rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.666666666666667'</span>
+                            <span class="operator">}</span>
+               <span class="operator">}</span><span class="operator">,</span> <span class="string">'Algorithm::Viterbi'</span> <span class="operator">);</span>
+</pre>
+</dd>
+<dt><strong><a name="start" class="item">start</a></strong></dt>
+
+<dd>
+<p>Initializes the start probabilities. 
+The start probabilities are passed as a reference to a hash, as shown in
+this example:</p>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$start_probability</span> <span class="operator">=</span> <span class="operator">{</span> <span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span> <span class="operator">}</span><span class="operator">;</span>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">start</span><span class="operator">(</span><span class="variable">$start_probability</span><span class="operator">);</span>
+</pre>
+<p>From the start probabilities, all possible states are derived, by 
+copying the keys of the start hash. This list of states is used by the 
+forward_viterbi method. It is therefore important to mention all 
+possible states in the start hash.</p>
+<p>Returns the start probabilities.</p>
+</dd>
+<dt><strong><a name="emission" class="item">emission</a></strong></dt>
+
+<dd>
+<p>Initializes the emission probabilities. 
+The emission is passed as a reference to a hash, as shown in
+this example:</p>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$emission_probability</span> <span class="operator">=</span> <span class="operator">{</span>
+          <span class="string">'shop'</span> <span class="operator">=&gt;</span>  <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.3'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.4'</span> <span class="operator">}</span><span class="operator">,</span>
+          <span class="string">'swim'</span> <span class="operator">=&gt;</span>  <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span> <span class="operator">}</span><span class="operator">,</span> 
+          <span class="string">'walk'</span> <span class="operator">=&gt;</span>  <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span> <span class="operator">}</span><span class="operator">,</span>
+          <span class="string">'clean'</span> <span class="operator">=&gt;</span> <span class="operator">{</span> <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span><span class="operator">,</span> <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span> <span class="operator">}</span>
+        <span class="operator">}</span><span class="operator">;</span>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">emission</span><span class="operator">(</span><span class="variable">$emission_probability</span><span class="operator">);</span>
+</pre>
+<p>The keys of the emission hash constitute the dictionary, which is used to determine 
+whether an observation is a known or an unknown observation.</p>
+<p>Returns the emission probabilities.</p>
+</dd>
+<dt><strong><a name="transition" class="item">transition</a></strong></dt>
+
+<dd>
+<p>Initializes the transition probabilities. 
+The transition is passed as a reference to a hash, as shown in
+this example:</p>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$transition_probability</span> <span class="operator">=</span> <span class="operator">{</span>
+   <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">7</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">3</span><span class="operator">}</span><span class="operator">,</span>
+   <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">}</span><span class="operator">,</span>
+  <span class="operator">}</span><span class="operator">;</span>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">transition</span><span class="operator">(</span><span class="variable">$transition_probability</span><span class="operator">);</span>
+</pre>
+<p>The transition hash can be 'sparse': it is sufficient to include only known 
+transitions between states. See method get_transition.</p>
+<p>Returns the transition probabilities.</p>
+</dd>
+<dt><strong><a name="forward_viterbi" class="item">forward_viterbi</a></strong></dt>
+
+<dd>
+<p>This method calculates the forward probability, the Viterbi path 
+and the Viterbi probability of a given sequence of observations.
+For a detailed description of the Algorithm, see the Wikipedia page
+<a href="http://en.wikipedia.org/wiki/Viterbi_algorithm">http://en.wikipedia.org/wiki/Viterbi_algorithm</a>.</p>
+<p>The difference with the algorithm described in the web page above, 
+is that the emission and the transition are calculated somewhat
+differently. See methods get_emission and get_transition.</p>
+<p>Example:</p>
+<pre>
+  <span class="keyword">use</span> <span class="variable">strict</span><span class="operator">;</span>
+  <span class="keyword">use</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">;</span>
+  <span class="keyword">use</span> <span class="variable">Data::Dumper</span><span class="operator">;</span>
+</pre>
+<pre>
+    
+      <span class="keyword">my</span> <span class="variable">$observations</span> <span class="operator">=</span> <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'shop'</span><span class="operator">,</span> <span class="string">'clean'</span> <span class="operator">]</span><span class="operator">;</span>
+       <span class="keyword">my</span> <span class="variable">$start</span> <span class="operator">=</span> <span class="operator">{</span> <span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span> <span class="operator">}</span><span class="operator">;</span>
+       <span class="keyword">my</span> <span class="variable">$transition</span> <span class="operator">=</span> <span class="operator">{</span>
+      <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">7</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">3</span><span class="operator">}</span><span class="operator">,</span>
+      <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">}</span><span class="operator">,</span>
+      <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$emission</span> <span class="operator">=</span> <span class="operator">{</span>
+    <span class="string">'shop'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+      <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.3'</span><span class="operator">,</span>
+      <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.4'</span><span class="operator">,</span>
+    <span class="operator">}</span><span class="operator">,</span>
+</pre>
+<pre>
+    <span class="string">'walk'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+      <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.6'</span><span class="operator">,</span>
+      <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span>
+    <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'clean'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+      <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span><span class="operator">,</span>
+      <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span>
+      <span class="operator">}</span>
+      <span class="operator">};</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">emission</span><span class="operator">(</span><span class="variable">$emission</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">transition</span><span class="operator">(</span><span class="variable">$transition</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">start</span><span class="operator">(</span><span class="variable">$start</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="keyword">print</span> <span class="variable">Dumper</span> <span class="operator">(</span><span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">forward_viterbi</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">));</span>
+</pre>
+<p>produces:</p>
+<pre>
+  <span class="variable">$VAR1</span> <span class="operator">=</span> <span class="string">'0.033612'</span><span class="operator">;</span>
+  <span class="variable">$VAR2</span> <span class="operator">=</span> <span class="operator">[</span>
+            <span class="string">'Sunny'</span><span class="operator">,</span>
+            <span class="string">'Rainy'</span><span class="operator">,</span>
+            <span class="string">'Rainy'</span><span class="operator">,</span>
+            <span class="string">'Rainy'</span>
+          <span class="operator">]</span><span class="operator">;</span>
+  <span class="variable">$VAR3</span> <span class="operator">=</span> <span class="string">'0.009408'</span><span class="operator">;</span>
+</pre>
+</dd>
+<dt><strong><a name="get_emission" class="item">get_emission</a></strong></dt>
+
+<dd>
+<p>Usage: $v-&gt;get_emission($observation, $state);</p>
+<p>Returns the emission probability for a given observation and state.
+This method is primarily for internal usage and is called
+by the forward_viterbi method.</p>
+<p>The dictionary consists of the keys of the emission table, e.g. a list 
+of known observations.</p>
+<p>If $observation is a known observation in the dictionary and $state
+exists as a state for the observation in the emission table, then return 
+the probability associated with $observation and $state.</p>
+<p>If the observation exists in the dictionary, but $state is a state not 
+connected to the observation, then return 0.</p>
+<p>If the observation does not exist in the dictionary and $v-&gt;{unknown_emission_prob}
+is defined, then return $v-&gt;{unknown_emission_prob}.
+Setting $v-&gt;{unknown_emission_prob} = 1 actually means that you are returning all
+possible states for an unknown observation.</p>
+<p>If the observation is unknown in the dictionary and $v-&gt;{unknown_emission_prob}
+is not defined, then return the start probability of $state.</p>
+<p>Example:</p>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$emission</span> <span class="operator">=</span> <span class="operator">{</span>
+    <span class="string">'shop'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.3'</span><span class="operator">,</span>
+                <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.4'</span>
+              <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'swim'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span>
+              <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'walk'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span><span class="operator">,</span>
+                <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span>
+              <span class="operator">}</span><span class="operator">,</span>
+    <span class="string">'clean'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                 <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span><span class="operator">,</span>
+                 <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.5'</span>
+               <span class="operator">}</span>
+  <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$start</span> <span class="operator">=</span> <span class="operator">{</span> <span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">6</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span> <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">emission</span><span class="operator">(</span><span class="variable">$emission</span><span class="operator">);</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">start</span><span class="operator">(</span><span class="variable">$start</span><span class="operator">);</span>
+  <span class="keyword">my</span> <span class="variable">$e</span><span class="operator">;</span>
+  <span class="variable">$e</span> <span class="operator">=</span> <span class="variable">get_emission</span><span class="operator">(</span><span class="string">'shop'</span><span class="operator">,</span> <span class="string">'Rainy'</span><span class="operator">);</span> <span class="comment"># $e = 0.4</span>
+  <span class="variable">$e</span> <span class="operator">=</span> <span class="variable">get_emission</span><span class="operator">(</span><span class="string">'swim'</span><span class="operator">,</span> <span class="string">'Rainy'</span><span class="operator">);</span> <span class="comment"># $e = 0</span>
+  <span class="variable">$e</span> <span class="operator">=</span> <span class="variable">get_emission</span><span class="operator">(</span><span class="string">'hack'</span><span class="operator">,</span> <span class="string">'Rainy'</span><span class="operator">);</span> <span class="comment"># $e = 0.6</span>
+  <span class="variable">$v</span><span class="operator">-&gt;</span><span class="operator">{</span><span class="string">unknown_emission_prob</span><span class="operator">}</span> <span class="operator">=</span> <span class="number">1</span><span class="operator">;</span>
+  <span class="variable">$e</span> <span class="operator">=</span> <span class="variable">get_emission</span><span class="operator">(</span><span class="string">'hack'</span><span class="operator">,</span> <span class="string">'Rainy'</span><span class="operator">);</span> <span class="comment"># $e = 1</span>
+</pre>
+</dd>
+<dt><strong><a name="get_transition" class="item">get_transition</a></strong></dt>
+
+<dd>
+<p>Usage: $v-&gt;get_transition($state, $next_state);</p>
+<p>Returns the transition probability between a state and the next state.
+This method is primarily for internal usage and is called
+by the forward_viterbi method.</p>
+<p>If the transition between $state and $next_state is defined, then return
+the probability associated with it.</p>
+<p>If the transition between $state and $next_state does not exist, then return
+the value of $v-&gt;unknown_transition_prob, which will be 0 unless otherwise defined.
+Setting this attribute to a very small value allows you to still obtain a Viterbi path, 
+although no suitable transitions were found between states of a given observation.</p>
+<p>Example:</p>
+<pre>
+    <span class="keyword">use</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$observations</span> <span class="operator">=</span> <span class="operator">[</span> <span class="string">'walk'</span><span class="operator">,</span> <span class="string">'shop'</span><span class="operator">,</span> <span class="string">'read'</span> <span class="operator">]</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$start</span> <span class="operator">=</span> <span class="operator">{</span> <span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">5</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span><span class="operator">,</span> <span class="string">'Stormy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">1</span> <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$transition</span> <span class="operator">=</span> <span class="operator">{</span>
+       <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">7</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">3</span><span class="operator">}</span><span class="operator">,</span>
+       <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="operator">{</span><span class="string">'Rainy'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">4</span><span class="operator">,</span> <span class="string">'Sunny'</span><span class="operator">=&gt;</span> <span class="number">0</span><span class="operator">.</span><span class="number">5</span><span class="operator">,</span> <span class="string">'Stormy'</span><span class="operator">=&gt;</span><span class="number">.1</span><span class="operator">}</span><span class="operator">,</span>
+       <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$emission</span> <span class="operator">=</span> <span class="operator">{</span>
+      <span class="string">'shop'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                  <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.4'</span><span class="operator">,</span>
+                  <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.9'</span>
+                <span class="operator">}</span><span class="operator">,</span>
+      <span class="string">'read'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                  <span class="string">'Stormy'</span> <span class="operator">=&gt;</span> <span class="string">'1'</span>
+                <span class="operator">}</span><span class="operator">,</span>
+      <span class="string">'walk'</span> <span class="operator">=&gt;</span> <span class="operator">{</span>
+                  <span class="string">'Sunny'</span> <span class="operator">=&gt;</span> <span class="string">'0.6'</span><span class="operator">,</span>
+                  <span class="string">'Rainy'</span> <span class="operator">=&gt;</span> <span class="string">'0.1'</span>
+                <span class="operator">}</span><span class="operator">,</span>
+    <span class="operator">}</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="variable">$v</span> <span class="operator">=</span> <span class="variable">Algorithm::Viterbi</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+    <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">emission</span><span class="operator">(</span><span class="variable">$emission</span><span class="operator">);</span>
+    <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">transition</span><span class="operator">(</span><span class="variable">$transition</span><span class="operator">);</span>
+    <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">start</span><span class="operator">(</span><span class="variable">$start</span><span class="operator">);</span>
+</pre>
+<pre>
+    <span class="keyword">my</span> <span class="operator">(</span><span class="variable">$prob</span><span class="operator">,</span> <span class="variable">$v_path</span><span class="operator">,</span> <span class="variable">$v_prob</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">forward_viterbi</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">);</span> 
+      <span class="comment"># returns 0, [], 0</span>
+</pre>
+<pre>
+    <span class="variable">$v</span><span class="operator">-&gt;</span><span class="operator">{</span><span class="string">unknown_transition_prob</span><span class="operator">}</span> <span class="operator">=</span> <span class="number">1e-100</span><span class="operator">;</span>
+</pre>
+<pre>
+    <span class="operator">(</span><span class="variable">$prob</span><span class="operator">,</span> <span class="variable">$v_path</span><span class="operator">,</span> <span class="variable">$v_prob</span><span class="operator">)</span> <span class="operator">=</span> <span class="variable">$v</span><span class="operator">-&gt;</span><span class="variable">forward_viterbi</span><span class="operator">(</span><span class="variable">$observations</span><span class="operator">);</span> 
+      <span class="comment"># returns 1.62e-102, ['Sunny', 'Sunny', 'Stormy', 'Stormy' ], 4.8e-103;</span>
+</pre>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Koen Dejonghe 	<a href="mailto:koen@fietsoverland.com">koen@fietsoverland.com</a>
+Copyright (c) 2006 Koen Dejonghe. All rights reserved.
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>Version 0.01 (2006-Nov-07)</p>
+
+</body>
+
+</html>

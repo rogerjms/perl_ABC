@@ -1,0 +1,120 @@
+<script>
+function pairaln(seq1, seq2){
+	// scoring scheme
+	
+	var MATCH    =  1; // +1 for letters that match
+	var MISMATCH = -1; // -1 for letters that mismatch
+	var GAP      = -1; // -1 for any gap
+	// initialization
+	
+	var score=[[]];
+	var pointer=[[]];
+	score[0][0]   = 0;
+	pointer[0][0] = 0;
+	var l1=seq1.length
+	var l2=seq2.length
+	
+	for(var j = 1; j <= l1; j++) {
+		
+    		score[0][j]   = GAP * j;
+    		pointer[0][j] = 2;
+	}
+	for (var i = 1; i <= l2; i++) {
+		
+		score[i]=[];
+		pointer[i]=[];
+    		score[i][0]   = GAP * i;
+    		pointer[i][0] = 3;
+	}
+	// fill
+	
+	for(var i = 1; i <= l2; i++) {
+		var letter2 = seq2.charAt(i-1);
+ 
+    		for(var j = 1; j <= l1; j++) {
+    			
+        		var diagonal_score, left_score, up_score;
+        		// calculate match score
+        		
+        		var letter1 = seq1.charAt(j-1);                        
+        		
+        		if (letter1 == letter2) {
+            		
+            			diagonal_score = score[i-1][j-1] + MATCH;
+        		}
+        		
+        		else {
+            			diagonal_score = score[i-1][j-1] + MISMATCH;
+        		}
+        		// calculate gap scores
+        		
+        		up_score   = score[i-1][j] + GAP;
+        		left_score = score[i][j-1] + GAP;
+        		// choose best score
+        		
+        		if (diagonal_score >= up_score) {
+            			
+            			if (diagonal_score >= left_score) {
+                			
+                			score[i][j]   = diagonal_score;
+                			pointer[i][j] = 1;
+            			}
+        			
+        			else {
+                			score[i][j]   = left_score;
+                			pointer[i][j] = 2;
+            			}
+        		
+        		} else {
+            			
+            			if (up_score >= left_score) {
+                			
+                			score[i][j]   = up_score;
+                			pointer[i][j] = 3;
+            			}
+            			
+            			else {
+                			score[i][j]   = left_score;
+                			pointer[i][j] = 2;
+            			}
+        		}
+    		}
+	}
+	// trace-back
+	
+	var align1 = [];
+	var align2 = [];
+	// start at last cell of matrix
+	var j = l1;
+	var i = l2;
+	while (1) {
+    
+    		if(pointer[i][j] == 0)break // ends at first cell of matrix
+    		if (pointer[i][j] == 1) {
+        
+        		align1[align1.length] = seq1.charAt(j-1);
+        		align2[align2.length] = seq2.charAt(i-1);
+        		i--;
+        		j--;
+    		}
+    		
+    		if (pointer[i][j] == 2) {
+        
+        		align1[align1.length] = seq1.charAt(j-1);
+        		align2[align2.length] = "-";
+        		j--;
+    		}
+    		
+    		if (pointer[i][j] == 3) {
+        
+        		align1[align1.length] = "-";
+        		align2[align2.length] = seq2.charAt(i-1);
+        		i--;
+    		}    
+	}
+	align1 = align1.reverse();
+	align2 = align2.reverse();
+return "序列：<p>"+seq1+"<br>"+seq2+"<p>比对结果：<table><tr><td>"+align1.join("</td><td>")+"</td></tr><tr><td>"+align2.join("</td><td>")+"</tr></table>"
+}
+document.write(pairaln('CTGGGCTGACTGA', 'GACTAGCTAGACTGA'))
+</script>

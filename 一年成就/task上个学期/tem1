@@ -1,0 +1,90 @@
+LOCUS       X58437                  1631 bp    DNA     linear   PLN 18-APR-2005
+DEFINITION  S.tuberosum mitochondrial cob gene for apocytochrome b.
+ACCESSION   X58437
+VERSION     X58437.1  GI:12877
+KEYWORDS    apocytochrome B; cob gene.
+SOURCE      mitochondrion Solanum tuberosum (potato)
+  ORGANISM  Solanum tuberosum
+            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+            Spermatophyta; Magnoliophyta; eudicotyledons; core eudicotyledons;
+            asterids; lamiids; Solanales; Solanaceae; Solanoideae; Solaneae;
+            Solanum.
+REFERENCE   1  (bases 1 to 1631)
+  AUTHORS   Zanlungo,S., Litvak,S. and Jordana,X.
+  TITLE     Isolation and nucleotide sequence of the potato mitochondrial gene
+            for apocytochrome b
+  JOURNAL   Plant Mol. Biol. 17 (3), 527-530 (1991)
+   PUBMED   1840690
+REFERENCE   2  (bases 1 to 1631)
+  AUTHORS   Zanlungo,S., Begu,D., Quinones,V., Araya,A. and Jordana,X.
+  TITLE     RNA editing of apocytochrome b (cob) transcripts in mitochondria
+            from two genera of plants
+  JOURNAL   Curr. Genet. 24 (4), 344-348 (1993)
+   PUBMED   7504589
+REFERENCE   3  (bases 1 to 1631)
+  AUTHORS   Jordana,X.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (15-MAR-1991) X. Jordana, Facultad de Ciencias
+            Biologicas, P. Universidad Catolica de Chile, Lab de Bioquimica,
+            Alameda 340, Casilla (P O Box)114-D, Santiago, Chile
+COMMENT     respiratory chain component; located on the inner
+            mitochondrial membrane.
+FEATURES             Location/Qualifiers
+     source          1..1631
+                     /organism="Solanum tuberosum"
+                     /organelle="mitochondrion"
+                     /mol_type="genomic DNA"
+                     /sub_strain="ssp tuberosum"
+                     /cultivar="Bintje"
+                     /db_xref="taxon:4113"
+                     /clone="pcob 13"
+                     /tissue_type="tuber"
+                     /clone_lib="SalI (mit. DNA in pUC18)"
+     gene            372..1553
+                     /gene="cob"
+     CDS             372..1553
+                     /gene="cob"
+                     /codon_start=1
+                     /product="apocytochrome b"
+                     /protein_id="CAA41343.1"
+                     /db_xref="GI:12878"
+                     /db_xref="GOA:P29757"
+                     /db_xref="UniProtKB/Swiss-Prot:P29757"
+                     /translation="MTIRNQRLSLLKQPISSTLNQHLIDYPTPSNLSYWWGFGSLAGI
+                     CLVIQIVTGVFLAMHYTPHVDLAFNSVEHIMRDVEGGWLLRYMHANGASMFFIVVHLH
+                     IFRGLYHASYSSPREFVRCLGVVIFLLMIVTAFIGYVLPWGQMSFWGATVITSLASAI
+                     PVVGDTIVTWLWGGFSVDNATLNRFFSLHHLLPFILVGASLLHLAALHQYGSNNPLGV
+                     HSEMDKIASYPYFYVKDLVGWVAFAIFFSIWIFYAPNVLGHPDNYIPANPMSTPPHIV
+                     PEWYFLPIHAILRSIPDKVGGVAAIAPVFICLLALPFFKSMYVRSSSFRPIHQGIFWL
+                     LLADCLLLGWIGCQPVEAPFVTIGQISPLVFFLFFAITPILGRVGRGIPNSYTDETDH
+                     T"
+ORIGIN      
+        1 gaattctttc tcccacacac cctttttgcc ctctttcgcc gaggaggaaa gaataatctt
+       61 ccaagcggac agagacctaa atttccatta gattcattcc taagcttgct ttgttgcagc
+      121 aagatgatca gtccgagagt gctggagaga agagaaagcg gtaaaaacct ctcttattcg
+      181 gtcaccgaga agtcggacga ctcttcagta acccagggtg atccgacccc ttcgacgctt
+      241 ttttcgctgt ataccccctc catcttcgga ggtggaagaa agggtactca cattttaata
+      301 catagtaggg ccccagaacg ctaaaaggtg ggggaacaag agttgtcacg atagaaaaga
+      361 gaaaaaaaga aatgactata aggaaccaac ggctctctct tcttaaacaa cctatatcct
+      421 ccacacttaa tcagcatttg atagattatc caaccccgag caatcttagt tattggtggg
+      481 ggttcggttc gttagcgggt atttgtttag tcattcagat agtgactggc gtttttttag
+      541 ctatgcatta cacacctcat gtggatctag ctttcaacag cgtagaacac attatgagag
+      601 atgttgaagg gggctggttg ctccgttata tgcatgctaa tggggcaagt atgtttttca
+      661 ttgtggttca cctgcatatt tttcgtggtc tatatcatgc cagttatagc agtcctaggg
+      721 aatttgttcg gtgtctcgga gttgtaatct tcctattaat gattgtgaca gcttttatag
+      781 gatatgtcct accttggggt cagatgagct tttggggagc tacagtaatc acaagcttag
+      841 ctagcgccat acctgtagta ggagatacca tagtgacttg gctttggggt gggttctccg
+      901 tggacaatgc caccttaaat cgttttttta gtcttcatca tttactcccc tttattttag
+      961 taggcgccag tcttcttcat ctggccgcat tgcatcaata tggatccaat aatccattgg
+     1021 gtgtacattc agagatggat aaaattgctt cttaccctta tttttatgta aaggatcttg
+     1081 taggttgggt agcttttgct atcttttttt ccatttggat tttttatgct cctaatgttt
+     1141 tggggcatcc cgacaattat atacctgcta atccgatgtc caccccgcct catattgtgc
+     1201 cagaatggta tttcctaccg atccatgcca ttcttcgtag tatacctgac aaagtgggag
+     1261 gtgtagccgc aatagcacca gtttttatat gtctgttggc tttacccttt tttaaaagta
+     1321 tgtatgtacg tagttcaagt tttcgcccga ttcaccaagg aatattttgg ttgcttttgg
+     1381 cggattgctt actactaggt tggatcggat gtcaacctgt ggaggcaccc tttgttacta
+     1441 ttggacaaat ttctccttta gttttcttct tgttctttgc cataacgccc attctgggac
+     1501 gagttggaag aggaattcct aattcttaca cggatgagac tgatcacacc tgattagtga
+     1561 gaaattctta caccaatcat ttacgagtgg gtaatacacc aagaatttac aagcggatcg
+     1621 aggaatgaag g
+//

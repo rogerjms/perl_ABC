@@ -1,0 +1,68 @@
+
+LOCUS       X54417                   471 bp    mRNA    linear   PLN 19-MAR-1991
+DEFINITION  D. carota rps13 mitochondrial mRNA for ribosomal protein S13.
+ACCESSION   X54417
+VERSION     X54417.1  GI:12905
+KEYWORDS    mitochondrial ribosomal protein; ribosomal protein; ribosomal
+            protein S13.
+SOURCE      mitochondrion Daucus carota (carrot)
+  ORGANISM  Daucus carota
+            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+            Spermatophyta; Magnoliophyta; eudicotyledons; core eudicotyledons;
+            asterids; campanulids; Apiales; Apiaceae; Apioideae; Scandiceae;
+            Daucinae; Daucus.
+REFERENCE   1  (bases 1 to 471)
+  AUTHORS   Wissinger,B., Schuster,W. and Brennicke,A.
+  TITLE     Species-specific RNA editing patterns in the mitochondrial rps13
+            transcripts of Oenothera and Daucus
+  JOURNAL   Mol. Gen. Genet. 224 (3), 389-395 (1990)
+   PUBMED   2266944
+REFERENCE   2  (bases 1 to 471)
+  AUTHORS   Schuster,W.
+  TITLE     Direct Submission
+  JOURNAL   Submitted (15-AUG-1990) W. Schuster, INSTITUT FUER GENBIOLOGISCHE
+            FORSCHUNG, BERLIN GMBH, IHNESTRASSE 63, 1000 BERLIN 33, FRG
+COMMENT     See also x54416 and x54417.
+FEATURES             Location/Qualifiers
+     source          1..471
+                     /organism="Daucus carota"
+                     /organelle="mitochondrion"
+                     /mol_type="mRNA"
+                     /strain="sativum"
+                     /db_xref="taxon:4039"
+                     /clone="pUC19 or pBluescript"
+                     /tissue_type="callus"
+     gene            <1..>471
+                     /gene="rps13"
+     mRNA            <47..>397
+                     /gene="rps13"
+     CDS             47..397
+                     /gene="rps13"
+                     /codon_start=1
+                     /product="ribosomal protein S13"
+                     /protein_id="CAA38281.1"
+                     /db_xref="GI:12906"
+                     /db_xref="GOA:P23209"
+                     /db_xref="UniProtKB/Swiss-Prot:P23209"
+                     /translation="MLYISGARSVADKQVRIASTKMYGIGPKKAIQVRYRLGISGNIK
+                     IKELTKYQIDQMEQMIGQDHVVHWELKRGERADIERFISISCYRGIRHQDGLPLRGQR
+                     THTNARTCRKQIRK"
+     misc_feature    72
+                     /gene="rps13"
+                     /note="RNA editing C to T"
+     misc_feature    102
+                     /gene="rps13"
+                     /note="RNA editing C to T"
+     misc_feature    146
+                     /gene="rps13"
+                     /note="RNA editing C to T"
+ORIGIN      
+        1 tctttatgat tccagccaag aagactcgta aaaggaagga tcaatcatgt tatatatttc
+       61 aggagctaga tcagttgccg ataaacaagt aagaattgcc tcaacaaaaa tgtatggaat
+      121 tgggcctaaa aaagccattc aggttcgtta tcgattaggt atcagtggga atataaagat
+      181 aaaagaatta actaagtatc agatcgacca aatggaacaa atgataggtc aagatcatgt
+      241 tgttcattgg gaattgaaga ggggagaacg agcagacatc gaacgattca tttctatttc
+      301 ttgttatcgt ggaattcgtc atcaagatgg attgccatta cgcggtcaac gaactcatac
+      361 taatgctagg acttgtcgca agcaaattag gaaatgaaag aagtctaccg aaagcccttg
+      421 gtacttgtct gatcaatcac actgatagct tcaatagttc actgaatttt t
+//

@@ -1,0 +1,318 @@
+Allium cepa
+ndhD
+AJ278350
+Antirrhinum majus
+ndhD
+X76976
+Antirrhinum majus
+psbL
+X63206
+Arabidopsis thaliana
+petL
+NC_000932
+Arabidopsis thaliana
+ndhG
+NC_000932
+Arabidopsis thaliana
+ndhD
+NC_000932 AJ278354 
+Arabidopsis thaliana
+rps14
+NC_000932
+Arabidopsis thaliana
+accD
+NC_000932
+Arabidopsis thaliana
+ndhB
+NC_000932
+Arabidopsis thaliana
+matK
+NC_000932
+Arabidopsis thaliana
+ndhB
+AJ002490 AJ002491 
+Arabidopsis thaliana
+psbE
+NC_000932
+Arabidopsis thaliana
+ndhD
+AJ278354
+Arabidopsis thaliana
+clpP
+NC_000932
+Arabidopsis thaliana
+atpF
+NC_000932
+Arabidopsis thaliana
+ndhF
+NC_000932
+Arabidopsis thaliana
+psbF
+NC_000932
+Arabidopsis thaliana
+rpoB
+NC_000932
+Bazzania trilobata
+ndhB
+Z80874
+Beta vulgaris
+psbL
+AB242560
+Daucus carota
+ndhB
+Z80859
+Ginkgo biloba
+psbL
+AJ130891
+Ginkgo biloba
+psbF
+AJ130891
+Ginkgo biloba
+psbE
+AJ130891
+Ginkgo biloba
+petL
+DQ069698
+Ginkgo biloba
+ndhB
+Z80861
+Hordeum vulgare subsp. vulgare
+ndhA
+AJ011848 Y13729 Y13730 
+Hordeum vulgare subsp. vulgare
+ndhD
+AJ011848
+Hordeum vulgare subsp. vulgare
+ndhA
+Y13729
+Hordeum vulgare
+ndhB
+X90650
+Hordeum vulgare
+ndhA
+AJ010976
+Hordeum vulgare subsp. vulgare
+ndhA
+Y13730
+Hordeum vulgare subsp. vulgare
+matK
+AB078138
+Larix x marschlinsii
+chlB
+X98680
+Larix x marschlinsii
+chlB
+X98679
+Larix x marschlinsii
+chlB
+X98679 X98680 X98686 X98687 
+Larix x marschlinsii
+chlB
+X98686
+Magnolia grandiflora
+ndhB
+Z80864
+Megaceros flagellaris
+rbcL
+AY860198
+Nicotiana sylvestris
+rpoC2
+AB098212
+Nicotiana sylvestris
+rpoC1
+AB098213
+Nicotiana sylvestris
+rps2
+AB098210
+Nicotiana sylvestris
+rps14
+AB098211
+Nicotiana sylvestris
+psbE
+AB098219
+Nicotiana sylvestris
+psbL
+AB098218 AB237912 
+Nicotiana sylvestris
+rpl20
+AB098217
+Nicotiana sylvestris
+rpoA
+AB098216
+Nicotiana sylvestris
+ndhD
+AB098223
+Nicotiana sylvestris
+ndhD
+AB098222
+Nicotiana sylvestris
+ndhF
+AB098221
+Nicotiana sylvestris
+petB
+AB098220
+Nicotiana sylvestris
+rpoB
+AB098215
+Nicotiana sylvestris
+rpoB
+AB098214
+Nicotiana sylvestris
+ndhD
+AB237912 AB098223 AB098222 
+Nicotiana sylvestris
+atpA
+AB098230
+Nicotiana sylvestris
+psbL
+AB237912
+Nicotiana sylvestris
+ndhA
+AB098227
+Nicotiana sylvestris
+ndhB
+AB098226
+Nicotiana sylvestris
+atpF
+AB098229
+Nicotiana sylvestris
+ndhA
+AB098228
+Nicotiana sylvestris
+ndhB
+AB098225
+Nicotiana sylvestris
+ndhB
+AB098224
+Nicotiana tomentosiformis
+rpoC1
+AB098234
+Nicotiana tomentosiformis
+rpoB
+AB098235
+Nicotiana tomentosiformis
+rps14
+AB098232
+Nicotiana tomentosiformis
+rpoC2
+AB098233
+Nicotiana tomentosiformis
+rps2
+AB098231
+Nicotiana tomentosiformis
+petB
+AB098241
+Nicotiana tomentosiformis
+psbE
+AB098240
+Nicotiana tomentosiformis
+psbL
+AB098239 NC_007602 AB240139 
+Nicotiana tomentosiformis
+rpl20
+AB098238
+Nicotiana tomentosiformis
+ndhB
+AB098245
+Nicotiana tomentosiformis
+ndhD
+AB098244
+Nicotiana tomentosiformis
+ndhD
+AB098243
+Nicotiana tomentosiformis
+ndhF
+AB098242
+Nicotiana tomentosiformis
+rpoA
+AB098237
+Nicotiana tomentosiformis
+rpoB
+AB098236
+Nicotiana tomentosiformis
+psbL
+NC_007602
+Nicotiana tomentosiformis
+ndhD
+AB240139 NC_007602 AB098244 AB098243 
+Nicotiana tomentosiformis
+psbL
+AB240139
+Nicotiana tomentosiformis
+ndhD
+AB240139
+Nicotiana tomentosiformis
+ndhA
+AB098249
+Nicotiana tomentosiformis
+ndhA
+AB098248
+Nicotiana tomentosiformis
+atpA
+AB098251
+Nicotiana tomentosiformis
+atpF
+AB098250
+Nicotiana tomentosiformis
+ndhB
+AB098247
+Nicotiana tomentosiformis
+ndhB
+AB098246
+Nothoceros sp. JC522
+rbcL
+AY860199
+Osmunda claytoniana
+ndhB
+Z80867
+Phaeoceros carolinianus
+rbcL
+AY860202
+Phaeoceros carolinianus
+rbcL
+AY463057
+Phaeoceros fimbriatus
+rbcL
+AY860200
+Phaeoceros pearsonii
+rbcL
+AY860203
+Phymatoceros bulbiculosus
+rbcL
+AY860201
+Physcomitrella patens
+rps14
+AB078009
+Physcomitrella patens
+cox1
+NC_007945
+Physcomitrella patens subsp. patens
+rps14
+NC_005087
+Physcomitrella patens subsp. patens
+rps14
+NC_005087 AP005672 
+Picea abies
+chlB
+X98685
+Pinus sylvestris
+chlB
+X98684
+Pinus sylvestris
+chlB
+X98683
+Pinus sylvestris
+chlB
+X98682 X98683 X98684 
+Pisum sativum
+ndhB
+Z80872
+Psilotum nudum
+ndhB
+Z80871
+Spinacia oleracea
+ndhD
+X76974
+Spinacia oleracea
+psbL
+X70699
